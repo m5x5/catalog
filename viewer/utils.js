@@ -4,7 +4,12 @@ import {pageContent} from './page-content.js';
 //import {prepNewRecordForm} from '../pages/pages.js';
 //import {pageContent} from '../pages/page-content.js';
 
+const UI = window.UI;
+UI.store = window.SolidLogic.store;
+UI.logic = window.SolidLogic;
+UI.rdf   = window.$rdf;
 export const store = UI.store;
+console.log(UI.store)
 export const fetcher = store.fetcher;
 
 export const rdf = $rdf;
@@ -20,7 +25,7 @@ const pathNode = $rdf.sym('http://www.w3.org/ns/shacl#path') ;
 */   
 export function source(){
 //  window.currentFolder = window.location.href.replace(/\/pages\/[^\/]+$/,'/');
-  window.currentFolder = window.location.href.replace(/\/pages\//,'/').replace(/\?.*/,'').replace(/\#.*/,'').replace(/(viewer|index)\.html/,'');
+  window.currentFolder = window.location.href.replace(/\/pages\//,'/').replace(/\?.*/,'').replace(/\#.*/,'').replace(/(viewer|index|shacl2form)\.html/,'');
   let vocURL= 'http://example.org';
 //  let shaclURL = 'urn:x-base:default' ;
 //   let shaclURL = currentFolder + 'catalog-shacl.ttl';
