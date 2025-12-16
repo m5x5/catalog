@@ -2,6 +2,27 @@
 @prefix ex: <http://example.org#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
+<0b1847d7-b047-4bfc-bf5d-326ff92ebaf1> a ex:Software ;
+  ex:landingPage <https://shaperepo.com/> ;
+  ex:maintainer <https://jackson.solidcommunity.net/profile/card#me> ;
+  ex:modified "2025-10-12T16:39:56.789Z"^^xsd:dateTime ;
+  ex:name "Shaperepo" ;
+  ex:provider <urn:uuid:762a7688-2bd7-40e1-95ea-55a167862b02> ;
+  ex:repository <https://github.com/o-development/shaperepo> ;
+  ex:status con:Production ;
+  ex:subType con:SpecializedPodService .
+
+<cdf4bebc-f820-4e4a-936f-4f278f74c902> a ex:Software ;
+  ex:description "Vue template for apps that follow the Solid Protocol. It provides a login screen and login/logout is implemented out of the box. It is integrated with other software tooling like '@uvdsl/solid-requests' and '@uvdsl/solid-rdf-store' but can be used without them." ;
+  ex:maintainer <https://uvdsl.solid.aifb.kit.edu/profile/card#me> ;
+  ex:modified "2025-12-05T10:33:52.717Z"^^xsd:dateTime ;
+  ex:name "@uvdsl/solid-app-template-vue" ;
+  ex:programmingLanguage "vue" ;
+  ex:repository <https://github.com/uvdsl/solid-app-template-vue> ;
+  ex:status con:Development ;
+  ex:subType con:OtherApp ;
+  ex:technicalKeyword "app template" .
+
 <http://harth.org/andreas/foaf#ah> a ex:Person ;
   ex:contactEmail <mailto:andreas@harth.org> ;
   ex:matrixHandle "@aharth:matrix.org" ;
@@ -466,6 +487,12 @@
   ex:name "John Fletcher" ;
   ex:webid <https://ubernatural.inrupt.net/profile/card#me> .
 
+<https://uvdsl.solid.aifb.kit.edu/profile/card#me> a ex:Person ;
+  ex:landingPage <https://github.com/uvdsl> ;
+  ex:modified "2025-12-05T10:53:15.993Z"^^xsd:dateTime ;
+  ex:name "Christoph Braun" ;
+  ex:webid <https://uvdsl.solid.aifb.kit.edu/profile/card#me> .
+
 <https://victorgon.inrupt.net/profile/card#me> a ex:Person ;
   ex:name "Víctor Gonzalo Cristóbal" ;
   ex:webid <https://victorgon.inrupt.net/profile/card#me> .
@@ -485,6 +512,14 @@
 <https://vsri.inrupt.net/profile/card#me> a ex:Person ;
   ex:name "V Sri" ;
   ex:webid <https://vsri.inrupt.net/profile/card#me> .
+
+<https://w3id.org/people/sergio> a ex:Person ;
+  ex:description "Senior Research Fellow in Knowledge Graph Engineering.\nSoftware Innovation Institute.\nSchool of Computing.\nCollege of Systems & Society.\nThe Australian National University." ;
+  ex:landingPage <https://w3id.org/people/sergio> ;
+  ex:modified "2025-10-20T22:41:37.228Z"^^xsd:dateTime ;
+  ex:name "Sergio José Rodríguez Méndez" ;
+  ex:resourcesOffered "research\ncollaboration\nmentorship" ;
+  ex:webid <https://w3id.org/people/sergio> .
 
 <https://worrallp.inrupt.net/profile/card#me> a ex:Person ;
   ex:name "Paul Worrall" ;
@@ -656,6 +691,13 @@
 <urn:uuid:0c2ba4a9-1d64-405d-847c-f16b5e5dbbed> a ex:Person ;
   ex:name "Kevin Dunglas" .
 
+<urn:uuid:0c9d9b68-4ffd-4a0b-9db8-fc08da0bc7ee> a ex:Organization ;
+  ex:landingPage <https://www.librebit.com/en/> ;
+  ex:modified "2025-10-12T04:08:30.563Z"^^xsd:dateTime ;
+  ex:name "Librebit" ;
+  ex:resourcesOffered "Nextcloud official partner (https://apps.nextcloud.com/apps/solid)" ;
+  ex:subType con:Company .
+
 <urn:uuid:0ce27cdc-7294-45f9-b41f-a9af7f5b4678> a ex:Person ;
   ex:landingPage <https://github.com/presbrey> ;
   ex:name "Presbrey" .
@@ -680,7 +722,7 @@
 <urn:uuid:1148e922-daa6-4047-9943-e9e6d9be4e3f> a ex:Software ;
   ex:description "A note-taking app for Solid" ;
   ex:maintainer <https://vincentt.inrupt.net/profile/card#me> ;
-  ex:name "Notepod" ;
+  ex:name "Notepod (VT)" ;
   ex:repository <https://github.com/Vinnl/notepod> ;
   ex:status con:Archived ;
   ex:subType con:ProductivityApp ;
@@ -717,15 +759,29 @@
 <urn:uuid:1483341f-c700-4819-b0b6-b0f940fb6861> a ex:Person ;
   ex:name "Leonard Rosenthol" .
 
-<urn:uuid:14ced765-4f16-4aa5-ab00-b22a360d2da7> a ex:Organization ;
-  ex:name "Oxford University" ;
-  ex:subType con:UniversityProject .
-
 <urn:uuid:1506929d-ec78-449c-b045-79c1e04a2296> a ex:Person ;
   ex:name "Pavlos Pseftoyiannis" .
 
 <urn:uuid:1520d276-6be9-4f8b-81ea-5ee328c80ff0> a ex:Person ;
   ex:name "Walter Almeida" .
+
+<urn:uuid:154bd979-27bf-4ecb-b237-9fed4f365b19> a ex:Software ;
+  ex:clientID <https://todo.fet.li/clientid.json> ;
+  ex:contactEmail <mailto:webdev+solid@fet.li> ;
+  ex:description "Add todos & keywords, list them, filter them, check them, done" ;
+  ex:landingPage <https://todo.fet.li/public/about> ;
+  ex:logo <https://todo.fet.li/icon192.png> ;
+  ex:maintainer <urn:uuid:e7021567-0ccb-4d3a-a949-0ce038b4759a> ;
+  ex:modified "2025-12-05T04:59:48.064Z"^^xsd:dateTime ;
+  ex:name "Solid Todo App" ;
+  ex:programmingLanguage "javascript, svelte, html, css" ;
+  ex:provider <urn:uuid:98fcf2c2-0380-492a-bfc2-16ac29783d42> ;
+  ex:repository <https://gitlab.fet.li/tobi/solid-todo-sveltekit> ;
+  ex:showcase <https://todo.fet.li/> ;
+  ex:socialKeyword "personal information management, collaboration" ;
+  ex:status con:Exploration ;
+  ex:subType con:ProductivityApp ;
+  ex:technicalKeyword "task manager, pim, tasks, todo" .
 
 <urn:uuid:1580a123-0663-4d07-8611-81a7efbbe482> a ex:Software ;
   ex:description "KeyChain for use with Web Cryptography API in Node.js." ;
@@ -799,6 +855,13 @@
   ex:name "NGI Zero Entrust" ;
   ex:subType con:FundingOrganization .
 
+<urn:uuid:1bc390e4-1b5c-474e-b58e-ec152682b3bc> a ex:Organization ;
+  ex:landingPage <https://thegood.cloud/> ;
+  ex:modified "2025-10-12T04:20:03.509Z"^^xsd:dateTime ;
+  ex:name "The Good Cloud" ;
+  ex:resourcesOffered "family cloud & personal storage (https://thegood.cloud/family-cloud-vs-personal-storage/, Nextcloud)" ;
+  ex:subType con:Company .
+
 <urn:uuid:1bfdaaf2-5a18-4116-98f2-2731cdf25837> a ex:Service ;
   ex:description "\n    applications to manage farms (products, harvests, sales, accounting, etc.) using taxonomies for short food supply chains.\n  " ;
   ex:name "Mycelium Project" ;
@@ -820,6 +883,13 @@
   ex:name "The Solid Team" ;
   ex:subType con:OpenSourceProject .
 
+<urn:uuid:1e10b15e-e114-48f1-87bb-0b46d124faa3> a ex:CreativeWork ;
+  ex:author <https://virginiabalseiro.com/#me> ;
+  ex:landingPage <https://virginiabalseiro.github.io/solid-ecosystem-monitor/> ;
+  ex:modified "2025-10-13T18:08:55.570Z"^^xsd:dateTime ;
+  ex:name "Solid Ecosystem Monitor" ;
+  ex:subType con:OtherLearningResource .
+
 <urn:uuid:1eda1c5a-f5fc-48cf-962d-0b79edfb2df3> a ex:Software ;
   ex:name "Datasister" ;
   ex:status con:Development ;
@@ -838,6 +908,15 @@
 <urn:uuid:2084d5e9-42cf-45a7-b88d-516952fca8a9> a ex:Person ;
   ex:landingPage <https://github.com/ajacksified> ;
   ex:name "Jack Lawson" .
+
+<urn:uuid:2092ea41-4657-49ca-8bde-ca00c9126b13> a ex:Service ;
+  ex:description "An architecture to implement data altruism as a service using the Solid protocol and ODRL policies to grant access to personal data for altruistic purposes in a privacy-friendly manner." ;
+  ex:landingPage <https://besteves4.github.io/iswc23demo/> ;
+  ex:modified "2025-12-05T13:28:47.725Z"^^xsd:dateTime ;
+  ex:name "SoDA" ;
+  ex:serviceEndpoint <https://github.com/besteves4/soda> ;
+  ex:status con:Development ;
+  ex:subType con:OtherApp .
 
 <urn:uuid:21c08b86-dadd-4678-a264-9a405dc90dbc> a ex:Software ;
   ex:description "A data module to manage address books and contacts in Solid Pods in an interoperable way. Based on rdflib.js." ;
@@ -881,6 +960,15 @@
   ex:status con:Production ;
   ex:subType con:RdfParsing ;
   ex:technicalKeyword "rdf parsing" .
+
+<urn:uuid:2474e337-7a77-4abd-bc89-23c0d6bee6ac> a ex:Software ;
+  ex:landingPage <https://apps.nextcloud.com/apps/solid> ;
+  ex:maintainer <https://michielbdejong.inrupt.net/profile/card#me>, <urn:uuid:b5c7af17-0810-4956-98b1-95c7e56ac786> ;
+  ex:modified "2025-10-16T01:19:34.341Z"^^xsd:dateTime ;
+  ex:name "Solid Pod Server for Nextcloud" ;
+  ex:repository <https://apps.nextcloud.com/apps/solid> ;
+  ex:status con:Production ;
+  ex:subType con:PodServer .
 
 <urn:uuid:24e8c2f9-309f-4ada-982e-672871f2176e> a ex:Person ;
   ex:name "Nada Akl" .
@@ -1027,6 +1115,20 @@
   ex:subType con:ProductivityApp ;
   ex:technicalKeyword "general purpose app" .
 
+<urn:uuid:2f17b968-a0e6-44d1-969d-5a2bd7b55c22> a ex:Software ;
+  ex:contactEmail <mailto:notepod@togaware.com> ;
+  ex:description "A note taking app using the solidui package for Flutter, and running on any platform." ;
+  ex:landingPage <https://github.com/anusii/notepod> ;
+  ex:modified "2025-12-04T21:16:01.793Z"^^xsd:dateTime ;
+  ex:name "notepod" ;
+  ex:programmingLanguage "Dart" ;
+  ex:provider <urn:uuid:4e64bb3a-2d1e-40ef-b3d9-902e4d635360> ;
+  ex:repository <https://github.com/anusii/notepod> ;
+  ex:showcase <https://notepod.solidcommunity.au/> ;
+  ex:status con:Production ;
+  ex:subType con:ProductivityApp ;
+  ex:technicalKeyword "notes" .
+
 <urn:uuid:2fdf1fa6-4c5e-4e4a-94c8-bb408eeb9933> a ex:Person ;
   ex:landingPage <https://github.com/thomasfr> ;
   ex:name "Thomas Fritz" .
@@ -1057,6 +1159,15 @@
 
 <urn:uuid:31674a33-5a73-46c1-b08b-02620f216405> a ex:Person ;
   ex:name "Tim Standen" .
+
+<urn:uuid:318ab22d-d4c9-4b44-9b31-faf68186fece> a ex:Service ;
+  ex:description "A decentralized hospitality exchange community app built with Solid Protocol." ;
+  ex:landingPage <https://github.com/solidcouch/solidcouch?tab=readme-ov-file> ;
+  ex:modified "2025-12-05T13:35:59.077Z"^^xsd:dateTime ;
+  ex:name "SolidCouch" ;
+  ex:serviceEndpoint <https://github.com/solidcouch/solidcouch?tab=readme-ov-file> ;
+  ex:status con:Development ;
+  ex:subType con:OtherApp .
 
 <urn:uuid:31efbb1f-5193-434c-80f0-d3e8e3ea91ed> a ex:Software ;
   ex:contactEmail <mailto:contact@pod-os.org> ;
@@ -1144,15 +1255,22 @@
 <urn:uuid:38df6a71-9e1d-4960-ab76-836c0cf066c6> a ex:Person ;
   ex:name "Mark Senefsky" .
 
+<urn:uuid:38e3e6f4-4cc6-4ece-8e35-da4f4faef0d7> a ex:Software ;
+  ex:description "A small library that provides an RDF store with Web fetching and reactive results. We use `n3` as the underlying RDF library. The store may use the Session object of `@uvdsl/solid-oidc-client-browser`to make authenticated requests to fetch RDF data from the Web.\n\nMain idea of this small library is to provide reactive results. That is, when the data that underlies a query result changes, the query result is updated automatically. When a dataset on the Web is updated, and that updated dataset is fetched by the store (triggered manually for now), then any query result (obtained via the reactive query method) is updated automatically by the store. Thus, reactivity frameworks of Vue, Angular, ... can update the UI automatically. Other routines may be triggered with that as well." ;
+  ex:maintainer <https://uvdsl.solid.aifb.kit.edu/profile/card#me> ;
+  ex:modified "2025-12-05T10:36:46.242Z"^^xsd:dateTime ;
+  ex:name "@uvdsl/solid-rdf-store" ;
+  ex:repository <https://github.com/uvdsl/solid-rdf-store> ;
+  ex:status con:Development ;
+  ex:subType con:OtherLibrary ;
+  ex:technicalKeyword "tooling" .
+
 <urn:uuid:39863b63-4229-4241-aeb4-38da9402cbb8> a ex:Person ;
   ex:name "Thomas Gallagher" .
 
 <urn:uuid:398c7137-50fa-4269-9d29-e9fa0ae22a43> a ex:Person ;
   ex:forumHandle "@mthorner" ;
   ex:name "Matthias Thorner" .
-
-<urn:uuid:398f57cf-bca0-4e98-b424-eaae0fe401d0> a ex:Person ;
-  ex:name "Christoph Braun" .
 
 <urn:uuid:39dd793e-4528-435d-84d4-731d4355073c> a ex:Person ;
   ex:landingPage <https://github.com/taisukef> ;
@@ -1282,6 +1400,8 @@
   ex:name "Sandra Wachter" .
 
 <urn:uuid:41515bb7-612b-424b-96dc-4f12ecc6a491> a ex:Organization ;
+  ex:landingPage <https://www.vlaanderen.be/digitaal-vlaanderen> ;
+  ex:modified "2025-10-16T01:13:42.608Z"^^xsd:dateTime ;
   ex:name "Digital Flanders" ;
   ex:subType con:GovernmentalOrganization .
 
@@ -1305,11 +1425,22 @@
   ex:landingPage <https://github.com/kezike> ;
   ex:name "Kayode Ezike" .
 
+<urn:uuid:436d9490-1ecf-4e90-bba4-792058a9cbad> a ex:Service ;
+  ex:landingPage <http://ttl.summerofcode.be/> ;
+  ex:modified "2025-10-13T18:04:07.015Z"^^xsd:dateTime ;
+  ex:name "Turtle Validator" ;
+  ex:serviceEndpoint <http://ttl.summerofcode.be/> ;
+  ex:status con:Production ;
+  ex:subType con:OtherApp .
+
 <urn:uuid:438e1f46-8b68-4f43-9650-f13a058f42cf> a ex:Person ;
   ex:name "Sindhu Vasireddy" .
 
 <urn:uuid:43a1b70e-f40c-49d6-baad-f070ed9ff9e2> a ex:Person ;
   ex:name "damooo" .
+
+<urn:uuid:43c99a08-0181-4a05-b21d-4c9face8000a> a ex:Person ;
+  ex:name "Graham Williams" .
 
 <urn:uuid:43e439d0-7b95-4f7f-b16b-75f0b7f04ff2> a ex:Software ;
   ex:maintainer <urn:uuid:45178a6a-d463-4dfc-a2e1-1ede8527b492> ;
@@ -1318,6 +1449,17 @@
   ex:status con:Archived ;
   ex:subType con:PodApp ;
   ex:technicalKeyword "pod management", "profile" .
+
+<urn:uuid:445df708-f02a-40e4-9a5f-2dad70983585> a ex:Software ;
+  ex:description "Our demo showcases how a Solid Pod, i. e. a web server that adheres to the Solid Protocol, can be extended to support Web Push Notifications for Progressive Web Applications (PWAs). For a user’s perspective, we present a PWA where a user can choose to receive Web Push Notifications when a message is posted to her Solid Pod’s inbox." ;
+  ex:maintainer <https://uvdsl.solid.aifb.kit.edu/profile/card#me> ;
+  ex:modified "2025-12-05T10:47:07.357Z"^^xsd:dateTime ;
+  ex:name "@uvdsl/solid-web-push" ;
+  ex:repository <https://github.com/uvdsl/solid-web-push> ;
+  ex:showcase <https://uvdsl.solid.aifb.kit.edu/conf/2022/icwe/demo> ;
+  ex:status con:Exploration ;
+  ex:subType con:OtherLibrary ;
+  ex:technicalKeyword "notifications" .
 
 <urn:uuid:45178a6a-d463-4dfc-a2e1-1ede8527b492> a ex:Person ;
   ex:name "Andrei Sambra" .
@@ -1343,15 +1485,6 @@
   ex:status con:Production ;
   ex:subType con:Framework ;
   ex:technicalKeyword "component library, web components, custom elements, html" .
-
-<urn:uuid:46a0b947-cfc1-4402-8fcd-a6b37da933c2> a ex:Service ;
-  ex:description "\n    Private meetings at home that promote a living together based on welcome,\n    trust and mutuall aid.\n  " ;
-  ex:name "Welcome to My Place" ;
-  ex:serviceEndpoint <https://welcometomyplace.org/> ;
-  ex:socialKeyword "housing", "resource sharing" ;
-  ex:softwareStackIncludes <urn:uuid:15cb7f61-aa8e-401e-926c-b4ebfdc77c3f> ;
-  ex:status con:Production ;
-  ex:subType con:SpecializedPodService .
 
 <urn:uuid:4724f448-e797-41c4-b2e9-a739228e6217> a ex:Organization ;
   ex:landingPage <https://www.mozilla.org/en-US/moss/> ;
@@ -1395,6 +1528,10 @@
   ex:modified "2025-10-03T09:48:24.835Z"^^xsd:dateTime ;
   ex:name "Solid Data Modules" ;
   ex:subType con:OpenSourceProject .
+
+<urn:uuid:48c5f67c-d9ed-4951-895b-41b95e8ac4d4> a ex:Organization ;
+  ex:name "Stichting Nederlandse Datakluis" ;
+  ex:subType con:Company .
 
 <urn:uuid:48f199c8-3ee1-4c77-9f8d-98215178c39e> a ex:Software ;
   ex:clientID <https://focus.noeldemartin.com/clientid.jsonld> ;
@@ -1460,16 +1597,16 @@
   ex:subType con:Company .
 
 <urn:uuid:4bf3ea3d-5fa6-42c9-ab26-1d2b7fa28806> a ex:Organization ;
-  ex:landingPage <https://solidcommunity.au/> ;
   ex:name "Solid Community AU" ;
   ex:subType con:OpenSourceProject .
 
 <urn:uuid:4d739ebd-3526-4825-a7f8-be1c5eec5477> a ex:Person ;
   ex:name "David Faveris" .
 
-<urn:uuid:4d9a58ad-f252-40ed-8d81-17f5fc6823da> a ex:Organization ;
-  ex:landingPage <https://sii.anu.edu.au/index.html> ;
-  ex:name "Australian National University Software Innovation Institute" ;
+<urn:uuid:4e64bb3a-2d1e-40ef-b3d9-902e4d635360> a ex:Organization ;
+  ex:landingPage <https://sii.anu.edu.au/> ;
+  ex:modified "2025-12-15T23:35:24.348Z"^^xsd:dateTime ;
+  ex:name "Australian National University - Software Innovation Institute" ;
   ex:subType con:UniversityProject .
 
 <urn:uuid:4e65bfb1-4d3f-4c3c-ab7c-5cbc824480c1> a ex:Person ;
@@ -1512,6 +1649,21 @@
 
 <urn:uuid:53bc9474-0042-48f6-98ec-3022fb9c748f> a ex:Person ;
   ex:name "Pol Alvarez" .
+
+<urn:uuid:54c42b53-3e06-4c8c-ade3-109e5a0340e0> a ex:Software ;
+  ex:contactEmail <mailto:solidui@togaware.com> ;
+  ex:description "Build Flutter-based Solid server apps quickly to run on any platform. We include a dozen demonstrator apps that serve to quick start the development of your own app. The package comes with a simple template to get started with." ;
+  ex:landingPage <https://github.com/anusii/solidui> ;
+  ex:maintainer <urn:uuid:88cd0163-cb4e-4b2d-a4c5-caab6397b25f> ;
+  ex:modified "2025-12-04T21:27:20.635Z"^^xsd:dateTime ;
+  ex:name "solidui" ;
+  ex:programmingLanguage "Dart" ;
+  ex:provider <urn:uuid:4e64bb3a-2d1e-40ef-b3d9-902e4d635360> ;
+  ex:repository <https://pub.dev/packages/solidui> ;
+  ex:showcase <https://bookoflife.solidcommunity.au/> ;
+  ex:status con:Production ;
+  ex:subType con:Framework ;
+  ex:technicalKeyword "library" .
 
 <urn:uuid:55125b07-9f10-4261-8bc1-87f035d7c99a> a ex:Person ;
   ex:name "Takeo Nishikata" .
@@ -1718,12 +1870,14 @@
   ex:subType con:UniversityProject .
 
 <urn:uuid:65ec3b50-48c0-4d65-9670-13135addc3c5> a ex:Service ;
-  ex:description "Members of the Yarrabah Aboriginal Community in Queensland each have a POD hosted on the Yarrabah Solid Server containing their own private health data." ;
-  ex:landingPage <https://sii.anu.edu.au/projects.html> ;
+  ex:contactEmail <mailto:healthpod@togaware.com> ;
+  ex:description "A demonstrator project where members of the Yarrabah Aboriginal Community in Queensland, Australia, each have a POD hosted on the Yarrabah Solid Server containing their own private health data, colelcted by themselves and populated by the local health clinic." ;
+  ex:landingPage <https://githu.com/anusii/healthpod> ;
+  ex:modified "2025-12-04T21:22:35.257Z"^^xsd:dateTime ;
   ex:name "Solid Health (AU)" ;
-  ex:provider <urn:uuid:1370af44-1595-4716-8415-252dca345d68>, <urn:uuid:4d9a58ad-f252-40ed-8d81-17f5fc6823da> ;
+  ex:provider <urn:uuid:1370af44-1595-4716-8415-252dca345d68>, <urn:uuid:4e64bb3a-2d1e-40ef-b3d9-902e4d635360> ;
   ex:serviceAudience "Members of the Yarrabah Aboriginal Community" ;
-  ex:socialKeyword "access to public resources", "ethnicity", "health" ;
+  ex:socialKeyword "access to public resources,ethnicity,health" ;
   ex:status con:Production ;
   ex:subType con:SpecializedPodService .
 
@@ -1749,15 +1903,59 @@
 <urn:uuid:678a8593-eb73-4d7b-ac7d-c97dfd4bba3d> a ex:Person ;
   ex:name "Pano Maria" .
 
+<urn:uuid:68039cca-bbda-414a-9fbc-fb9ad19bd02a> a ex:Software ;
+  ex:description "A fork of Inrupt's Solid client authentication libraries adapted for web browser extensions" ;
+  ex:maintainer <urn:uuid:a56af111-9ced-432c-8fee-dc0ece279cf5> ;
+  ex:modified "2025-11-30T22:04:03.777Z"^^xsd:dateTime ;
+  ex:name "solid-client-authn-webext" ;
+  ex:programmingLanguage "TypeScript" ;
+  ex:repository <https://github.com/NeiRo21/solid-client-authn-webext> ;
+  ex:status con:Development ;
+  ex:subType con:AuthenticatedFetch .
+
 <urn:uuid:68f6f6b0-2eca-4b24-ba88-bbee0190e3c6> a ex:Person ;
   ex:landingPage <https://github.com/Tpt> ;
   ex:name "Thomas Tanon" .
+
+<urn:uuid:692f351f-0e50-4274-9f3f-9d28d9bef6ba> a ex:Software ;
+  ex:contactEmail <mailto:geopod@togaware.com> ;
+  ex:description "A demonstrator app using a map interface for accessing and displaying data from your pod" ;
+  ex:landingPage <https://gihub.com/gjwgit/geopod> ;
+  ex:maintainer <urn:uuid:43c99a08-0181-4a05-b21d-4c9face8000a> ;
+  ex:modified "2025-12-04T21:19:31.441Z"^^xsd:dateTime ;
+  ex:name "geopod" ;
+  ex:programmingLanguage "Dart" ;
+  ex:provider <urn:uuid:8e5a5b47-a434-477b-a431-29e7586fd75c> ;
+  ex:repository <https://gihub.com/gjwgit/geopod> ;
+  ex:showcase <https://geopod.solidcommunity.au> ;
+  ex:socialKeyword "community" ;
+  ex:status con:Development ;
+  ex:subType con:OtherApp ;
+  ex:technicalKeyword "map,spatial,geographic" .
 
 <urn:uuid:69885edb-705c-409e-89e7-1ec19e0ba146> a ex:Organization ;
   ex:description "The Next Generation Internet (NGI) is a European Commission initiative that aims to shape the development and evolution of the Internet into an Internet of Trust. An Internet that responds to people’s fundamental needs, including trust, security, and inclusion, while reflecting the values and the norms all citizens enjoy in Europe." ;
   ex:landingPage <https://www.ngi.eu> ;
   ex:name "Next Generation Internet" ;
   ex:subType con:FundingOrganization .
+
+<urn:uuid:69fbb4f7-97a8-48c3-bc5a-6f706cc96120> a ex:Service ;
+  ex:description "A ready-to-use connect/register widget for Solid webapp, as add-on library for node-solid-server." ;
+  ex:landingPage <https://bourgeoa.solidcommunity.net/public/solid-file-widget/> ;
+  ex:modified "2025-12-05T13:34:33.597Z"^^xsd:dateTime ;
+  ex:name "Solid authorization Widget" ;
+  ex:serviceEndpoint <http://github.com/bourgeoa/solid-file-widget> ;
+  ex:status con:Production ;
+  ex:subType con:OtherApp .
+
+<urn:uuid:6a6aa694-7814-4594-a187-987f6774fd96> a ex:Software ;
+  ex:description "Hundreds of ideas. Countless chores. A never-ending list of things to do.\nForget all of that. Write it down, and focus on what matters." ;
+  ex:landingPage <https://focus.noeldemartin.com/> ;
+  ex:modified "2025-12-05T13:29:59.467Z"^^xsd:dateTime ;
+  ex:name "Solid Focus" ;
+  ex:showcase <https://github.com/NoelDeMartin/solid-focus> ;
+  ex:status con:Exploration ;
+  ex:subType con:ProductivityApp .
 
 <urn:uuid:6b5059c0-85c6-4830-a120-e60e6a5f7f96> a ex:Person ;
   ex:name "Paul Mundt" .
@@ -1778,6 +1976,13 @@
   ex:name "Practical Solid" ;
   ex:subType con:AboutSolid ;
   ex:technicalKeyword "video, tutorial" .
+
+<urn:uuid:6daf9c73-5cd9-4533-bea9-9f79e32115e6> a ex:Organization ;
+  ex:contactEmail <mailto:tobias.kaefer@kit.edu> ;
+  ex:landingPage <https://websci.aifb.kit.edu/Solid.php> ;
+  ex:modified "2025-12-05T10:57:46.676Z"^^xsd:dateTime ;
+  ex:name "Karlsruhe Insitute of Technology (KIT)" ;
+  ex:subType con:UniversityProject .
 
 <urn:uuid:6e815fdd-927f-4748-8619-0ee057539d34> a ex:Person ;
   ex:name "Sina Bahram" .
@@ -1845,6 +2050,15 @@
   ex:status con:Production ;
   ex:subType con:AuthenticatedFetch ;
   ex:technicalKeyword "solid client" .
+
+<urn:uuid:74c4b7ac-e3c6-4b31-b46a-d5cf1321f986> a ex:Service ;
+  ex:description "An application for viewing and updating user WebID profiles" ;
+  ex:landingPage <https://linkeddata.github.io/profile-editor/#/profile/view> ;
+  ex:modified "2025-12-05T13:27:10.613Z"^^xsd:dateTime ;
+  ex:name "profile-editor" ;
+  ex:serviceEndpoint <https://linkeddata.github.io/profile-editor/#/profile/view> ;
+  ex:status con:Production ;
+  ex:subType con:OtherApp .
 
 <urn:uuid:74c72ba4-1d3a-4d2f-8062-8a8973c83a1f> a ex:Event ;
   ex:description "Coding discussion to support the SolidOS stack of libraries and apps." ;
@@ -1997,6 +2211,14 @@
 <urn:uuid:7f46585b-787e-4412-b0eb-10a0fb57cdcc> a ex:Person ;
   ex:name "Lauernce Zhang" .
 
+<urn:uuid:806444cc-006f-4cb6-9ca6-9faf42e64e7a> a ex:Service ;
+  ex:description "Private meetings at home that promote a living together based on welcome, trust and mutual aid." ;
+  ex:modified "2025-12-05T14:52:24.312Z"^^xsd:dateTime ;
+  ex:name "Welcome to my place" ;
+  ex:serviceEndpoint <https://welcometomyplace.org/> ;
+  ex:status con:Production ;
+  ex:subType con:SpecializedPodService .
+
 <urn:uuid:807b7a3d-85f8-4e2b-9a2a-58a1e8077928> a ex:Person ;
   ex:forumHandle "@oolivo" ;
   ex:name "Oz" .
@@ -2078,6 +2300,9 @@
 <urn:uuid:885ce03b-2cfc-4276-b8f9-7f4e98b95128> a ex:Person ;
   ex:name "Søren Grauslund" .
 
+<urn:uuid:88cd0163-cb4e-4b2d-a4c5-caab6397b25f> a ex:Person ;
+  ex:name "Tony Chen" .
+
 <urn:uuid:891024f2-4af9-4de7-b428-932e6acf4379> a ex:Person ;
   ex:name "Michael Pigott" .
 
@@ -2142,6 +2367,16 @@
 
 <urn:uuid:8e23fccf-1e0e-4c77-8a00-dcca21f25d95> a ex:Person ;
   ex:name "Roger Perry" .
+
+<urn:uuid:8e5a5b47-a434-477b-a431-29e7586fd75c> a ex:Organization ;
+  ex:contactEmail <mailto:solid@togaware.com> ;
+  ex:description "A long established (30 years) free and open source developer and provider across AI, machine learning, data science, and privacy." ;
+  ex:landingPage <https://togaware.com> ;
+  ex:logo <https://togaware.com/wp-content/uploads/2015/10/togaware02tr5.png> ;
+  ex:modified "2025-10-20T22:05:05.438Z"^^xsd:dateTime ;
+  ex:name "Togaware Pty Ltd" ;
+  ex:resourcesOffered "mentorship collaboration" ;
+  ex:subType con:Company .
 
 <urn:uuid:8e7cfc1a-5853-4753-9e58-c05c0c26ec4b> a ex:Software ;
   ex:description "A mock server that can be used for apps." ;
@@ -2209,9 +2444,28 @@
   ex:subType con:AuthenticatedFetch ;
   ex:technicalKeyword "solid client" .
 
+<urn:uuid:9380d590-0359-4dbc-b644-9ca0ce85042d> a ex:Software ;
+  ex:description "Just a simple test app for CRUD operations." ;
+  ex:maintainer <https://uvdsl.solid.aifb.kit.edu/profile/card#me> ;
+  ex:modified "2025-12-05T10:30:16.019Z"^^xsd:dateTime ;
+  ex:name "@uvdsl/solid-test-app" ;
+  ex:programmingLanguage "vue" ;
+  ex:repository <https://github.com/uvdsl/solid-test-app> ;
+  ex:status con:Production ;
+  ex:subType con:OtherApp .
+
 <urn:uuid:93d804d1-c3c5-49d0-bab2-a581d65bedbd> a ex:Organization ;
   ex:name "CodePDX" ;
   ex:subType con:OpenSourceProject .
+
+<urn:uuid:93ec3319-6ef2-445f-8eb8-a7a44df41e9f> a ex:Service ;
+  ex:contactEmail <mailto:info@we-are-health.eu> ;
+  ex:description "A healthcare quality-of-care survey system developed by VITO for use with Belgian hospitals, where patients store survey answers in their pods while maintaining privacy and GDPR compliance" ;
+  ex:modified "2025-12-05T13:25:33.592Z"^^xsd:dateTime ;
+  ex:name "We Are" ;
+  ex:serviceEndpoint <https://we-are-health.be/en> ;
+  ex:status con:Production ;
+  ex:subType con:OtherApp .
 
 <urn:uuid:94346f18-b7b3-486b-b17b-9d08df1fea16> a ex:Software ;
   ex:description "software used in SolidOS app." ;
@@ -2273,6 +2527,10 @@
   ex:status con:Production ;
   ex:subType con:AuthenticatedFetch ;
   ex:technicalKeyword "solid client" .
+
+<urn:uuid:98fcf2c2-0380-492a-bfc2-16ac29783d42> a ex:Organization ;
+  ex:name "Hexagon Six" ;
+  ex:subType con:OpenSourceProject .
 
 <urn:uuid:9916069d-135e-4cee-82d4-79816dfc61b2> a ex:Software ;
   ex:description "Stores Vcard Contacts on the POD" ;
@@ -2482,6 +2740,11 @@
   ex:subType con:ProductivityApp ;
   ex:technicalKeyword "chat" .
 
+<urn:uuid:a56af111-9ced-432c-8fee-dc0ece279cf5> a ex:Person ;
+  ex:forumHandle "NeiRo21" ;
+  ex:modified "2025-11-30T22:01:26.462Z"^^xsd:dateTime ;
+  ex:name "Nikolay Borisov" .
+
 <urn:uuid:a5c0934d-320a-4749-b06f-b43c8adf1cd7> a ex:Person ;
   ex:name "Ruben Dedecker" .
 
@@ -2608,6 +2871,17 @@
   ex:subType con:OtherApp ;
   ex:technicalKeyword "general purpose app", "uncategorized" .
 
+<urn:uuid:b123d59e-bf97-4f0f-ad0d-4d550dd2ea70> a ex:Software ;
+  ex:contactEmail <mailto:braun@kit.edu> ;
+  ex:description "This is a Web App to control and manage access to your data following the Solid protocol. It assumes that access control is managed using Web Access Control. It is far from perfect, but it is a start towards an access control app that works on the Solid Pods we have today, without requiring custom modifications." ;
+  ex:maintainer <https://uvdsl.solid.aifb.kit.edu/profile/card#me> ;
+  ex:modified "2025-12-15T15:20:18.157Z"^^xsd:dateTime ;
+  ex:name "@uvdsl/solid-authorization-app" ;
+  ex:programmingLanguage "typescript, vue" ;
+  ex:repository <https://github.com/uvdsl/solid-authorization-app> ;
+  ex:status con:Exploration ;
+  ex:subType con:PodApp .
+
 <urn:uuid:b156990b-76c0-4feb-af06-e7194add2622> a ex:Person ;
   ex:name "Woods Denny" .
 
@@ -2674,6 +2948,9 @@
   ex:modified "2025-06-09T15:23:17.525Z"^^xsd:dateTime ;
   ex:name "Ronald Siebes" .
 
+<urn:uuid:b5c7af17-0810-4956-98b1-95c7e56ac786> a ex:Person ;
+  ex:name "Auke van Slooten" .
+
 <urn:uuid:b6368613-62b0-4e3a-889b-d0c76bfab36c> a ex:Software ;
   ex:description "The solid databrowser technology as a stand-alone electron app." ;
   ex:maintainer <https://jeff-zucker.solidcommunity.net/profile/card#me> ;
@@ -2723,6 +3000,15 @@
 
 <urn:uuid:b986fa30-b857-40e8-b9f1-d5b475be0c33> a ex:Person ;
   ex:name "Otto AA" .
+
+<urn:uuid:b9f8d9ef-2297-4ea7-95db-f5a60861f657> a ex:Service ;
+  ex:description "NextFM is a file manager for Solid pods that allows users to browse, upload, download, and manage their files in their Solid pod storage. It supports various file operations and provides a visual interface for interacting with Solid storage." ;
+  ex:landingPage <https://github.com/inrupt/nextfm> ;
+  ex:modified "2025-12-05T14:54:13.451Z"^^xsd:dateTime ;
+  ex:name "NextFM" ;
+  ex:serviceEndpoint <https://solidfm.app/> ;
+  ex:status con:Exploration ;
+  ex:subType con:GeneralPurposePodService .
 
 <urn:uuid:ba0912d9-0265-4037-a215-fec89c071b5a> a ex:Software ;
   ex:description "Python library for creating and managing files and folders in Solid pods." ;
@@ -2838,6 +3124,13 @@
 <urn:uuid:c258f5ea-8a7a-4067-b006-bc8f66272c88> a ex:Person ;
   ex:name "Mike O'Neill" .
 
+<urn:uuid:c34490bb-f760-4aca-b7db-da69f0041016> a ex:Organization ;
+  ex:landingPage <https://www.womenofsolid.org/> ;
+  ex:modified "2025-10-14T16:07:18.664Z"^^xsd:dateTime ;
+  ex:name "Women of Solid" ;
+  ex:resourcesOffered "community_building" ;
+  ex:subType con:OpenSourceProject .
+
 <urn:uuid:c44d2814-5ac6-461c-8af6-9224e583a743> a ex:Person ;
   ex:name "Tory Clasen" .
 
@@ -2888,6 +3181,15 @@
 
 <urn:uuid:ca450eb8-8751-4841-ac57-3d6bfe0b7fee> a ex:Person ;
   ex:name "Wouter Kok" .
+
+<urn:uuid:cac94249-6a2b-4308-bc00-67784198d54f> a ex:Service ;
+  ex:description "With your•id, you decide what websites can know about you. This makes cookie notifications redundant, and tracking is no longer necessary. One login for all affiliated websites One login for all affiliated websites. No more hassle with multiple accounts and passwords." ;
+  ex:landingPage <https://jouw.id/> ;
+  ex:modified "2025-12-05T13:22:46.469Z"^^xsd:dateTime ;
+  ex:name "jouw.id" ;
+  ex:provider <urn:uuid:48c5f67c-d9ed-4951-895b-41b95e8ac4d4> ;
+  ex:status con:Development ;
+  ex:subType con:OtherApp .
 
 <urn:uuid:cac94d21-cab3-4aa3-9837-22d48f998767> a ex:Person ;
   ex:name "Mark Lizar" .
@@ -3030,6 +3332,19 @@
   ex:name "redpencil.io" ;
   ex:subType con:Company .
 
+<urn:uuid:d785cb19-0d53-48f7-a92a-65d6b74a8388> a ex:Software ;
+  ex:contactEmail <mailto:contact@jacobdaniel.co.uk> ;
+  ex:description "This pilot app is a working demonstration of how we could use modern, decentralised technology to create a community-driven digital archive. The goal is to introduce Solid to a wide range of artists and content producers, providing a tangible sense of its potential. The current implementation allows for basic pod creation and gives users access to a dashboard where they can upload documents and images, alongside managing access with ACL text fields.\n\nI hope to also make it possible to create annotated resources from the data stored within the pods.\n\n\nI hope that a decentralised approach will be considered for adoption by the archivist management and community steering group.\n\nThere are several active archives in North Kensington, with work already going ahead on making them publicly available, so there is an opportunity for them to collaborate while maintaining their own individual integrity and control." ;
+  ex:landingPage <https://nksja-demo.northkensingtonlibrary.org/> ;
+  ex:maintainer <urn:uuid:07a22f27-aa6c-47b6-b051-fef31e447977> ;
+  ex:modified "2025-10-06T19:32:25.452Z"^^xsd:dateTime ;
+  ex:name "North Kensington Social Justice Archive - Pilot" ;
+  ex:repository <https://github.com/Jacob-Daniel/solidpod> ;
+  ex:showcase <https://nksja-demo.northkensingtonlibrary.org/> ;
+  ex:status con:Exploration ;
+  ex:subType con:SpecializedPodService ;
+  ex:technicalKeyword "archive,social history" .
+
 <urn:uuid:d7f37fa1-a733-401b-b43d-7f3703bf4f07> a ex:Software ;
   ex:maintainer <https://jeff-zucker.solidcommunity.net/profile/card#me> ;
   ex:name "Solid IDE" ;
@@ -3046,11 +3361,13 @@
   ex:name "Pieter van Everdingen" .
 
 <urn:uuid:dad01e42-95bb-4b92-9248-ddb3ded00372> a ex:Service ;
+  ex:contactEmail <mailto:solid@togaware.com> ;
+  ex:description "We support the international Solid community with open source resources and applications, taking a privacy first approach to technology and applications. We are supported by the Software Innovation Institute of the Australian National University, in collaboration with Togaware and the Solid Project AU." ;
   ex:landingPage <https://www.solidproject.au/> ;
-  ex:name "Solid Community AU" ;
-  ex:provider <urn:uuid:0ab95c66-43ae-441e-bd0f-545f07efc00e>, <urn:uuid:4bf3ea3d-5fa6-42c9-ab26-1d2b7fa28806> ;
+  ex:modified "2025-10-20T22:01:13.285Z"^^xsd:dateTime ;
+  ex:name "Solid Community AU Pod Service" ;
+  ex:provider <urn:uuid:4bf3ea3d-5fa6-42c9-ab26-1d2b7fa28806> ;
   ex:serviceEndpoint <https://pods.solidcommunity.au/> ;
-  ex:softwareStackIncludes <urn:uuid:9fd57741-9f86-4e98-89d5-64c0d0cf8425> ;
   ex:status con:Production ;
   ex:subType con:GeneralPurposePodService .
 
@@ -3167,6 +3484,9 @@
   ex:name "PDS Interop" ;
   ex:subType con:UniversityProject .
 
+<urn:uuid:e7021567-0ccb-4d3a-a949-0ce038b4759a> a ex:Person ;
+  ex:name "Tobi at Hexagon Six" .
+
 <urn:uuid:e861297a-edbf-4d71-a72e-0123ab70d5d9> a ex:Person ;
   ex:forumHandle "@linonetwo" ;
   ex:name "Lin Onetwo" .
@@ -3255,6 +3575,17 @@
 <urn:uuid:efb5d75f-710f-4828-9318-8bc056ff587b> a ex:Person ;
   ex:name "Alain Bourgeois" .
 
+<urn:uuid:efd89ce3-1f6d-4b8f-8c8a-173418a5495b> a ex:Software ;
+  ex:description "This library implements checking Web Access Control rules in plain Java, (... sips coffee ...)." ;
+  ex:maintainer <https://uvdsl.solid.aifb.kit.edu/profile/card#me> ;
+  ex:modified "2025-12-05T10:43:06.637Z"^^xsd:dateTime ;
+  ex:name "com.github.uvdsl.solid-wac-java" ;
+  ex:programmingLanguage "java" ;
+  ex:repository <https://github.com/uvdsl/solid-wac-java> ;
+  ex:status con:Development ;
+  ex:subType con:OtherLibrary ;
+  ex:technicalKeyword "tooling" .
+
 <urn:uuid:efe1be5e-94e7-4ccd-ae04-4edede8b0606> a ex:Organization ;
   ex:landingPage <https://duckduckgo.com/donations> ;
   ex:name "DuckDuckGo Donations" ;
@@ -3330,6 +3661,17 @@
   ex:status con:Production ;
   ex:subType con:GeneralPurposePodService .
 
+<urn:uuid:f7d90fea-3ce7-44a3-8060-f31afa8e14b0> a ex:Software ;
+  ex:description "A small library that provides HTTP requests using the Solid protocol. Requests use the Session object of `@uvdsl/solid-oidc-client-browser` to make authenticated requests. We use `n3` for parsing RDF and provide a simple helper function (parseToN3) for that." ;
+  ex:maintainer <https://uvdsl.solid.aifb.kit.edu/profile/card#me> ;
+  ex:modified "2025-12-05T10:39:24.633Z"^^xsd:dateTime ;
+  ex:name "@uvdsl/solid-requests" ;
+  ex:programmingLanguage "typescript" ;
+  ex:repository <https://github.com/uvdsl/solid-requests> ;
+  ex:status con:Production ;
+  ex:subType con:OtherLibrary ;
+  ex:technicalKeyword "tooling" .
+
 <urn:uuid:f7def891-8be0-48af-85e5-bcc1806c385d> a ex:Person ;
   ex:name "Juliette Carter" .
 
@@ -3365,6 +3707,17 @@
 <urn:uuid:fc81be7c-3c54-4667-9fc8-c7a36c3d9d97> a ex:Person ;
   ex:name "Anna Kallenborn-Bolden" .
 
+<urn:uuid:fcd25482-20e6-441c-84a8-5ee3326e4599> a ex:Software ;
+  ex:description "SOLID-OIDC Request Flow - Token Verification:\n\nThis library implements token verification for the SOLID-OIDC Request Flow as of today (Editor’s Draft, 2 November 2022) in plain Java, (... sips coffee ...).\n\nThe SolidOidcTokenVerifier implements all the functionality for the authentication/authorization server (as) to derive a boolean decision if the client is authenticated or not." ;
+  ex:maintainer <https://uvdsl.solid.aifb.kit.edu/profile/card#me> ;
+  ex:modified "2025-12-05T10:44:25.351Z"^^xsd:dateTime ;
+  ex:name "com.github.uvdsl.solid-oidc-java" ;
+  ex:programmingLanguage "java" ;
+  ex:repository <https://github.com/uvdsl/solid-oidc-java> ;
+  ex:status con:Development ;
+  ex:subType con:OtherLibrary ;
+  ex:technicalKeyword "tooling" .
+
 <urn:uuid:fd5fed5c-ea2e-41a1-9427-bf191757695d> a ex:Person ;
   ex:landingPage <https://gitlab.com/frozen.pomelo> ;
   ex:name "Marc Fornos" .
@@ -3375,6 +3728,17 @@
   ex:status con:Development ;
   ex:subType con:PodApp ;
   ex:technicalKeyword "pod management" .
+
+<urn:uuid:fed30686-cdf1-4d17-9a0a-ef36c1772d73> a ex:Software ;
+  ex:description "Client-side / frontend-only implementation of the Solid-OIDC bearer flow." ;
+  ex:maintainer <https://uvdsl.solid.aifb.kit.edu/profile/card#me> ;
+  ex:modified "2025-12-05T10:28:20.622Z"^^xsd:dateTime ;
+  ex:name "@uvdsl/solid-oidc-client-browser" ;
+  ex:programmingLanguage "typescript" ;
+  ex:repository <https://github.com/uvdsl/solid-oidc-client-browser> ;
+  ex:status con:Development ;
+  ex:subType con:AuthenticatedFetch ;
+  ex:technicalKeyword "solid-oidc, authentication" .
 
 <urn:uuid:ff0d9327-ea9f-40cb-ace7-2d3402fa373b> a ex:Person ;
   ex:forumHandle "@GSL" ;
@@ -3402,3 +3766,12 @@
   ex:softwareStackIncludes <urn:uuid:e4bfaa4a-f463-4c5e-a781-d866235743ac> ;
   ex:status con:Production ;
   ex:subType con:GeneralPurposePodService .
+
+<urn:uuid:ffff30eb-de45-44e1-9f71-08f03c963099> a ex:Software ;
+  ex:description "A simple RSS reader for Solid" ;
+  ex:landingPage <https://rrustom.github.io/solid-rss/> ;
+  ex:modified "2025-12-05T13:32:39.008Z"^^xsd:dateTime ;
+  ex:name "Solid RSS" ;
+  ex:showcase <https://github.com/RRustom/solid-rss> ;
+  ex:status con:Exploration ;
+  ex:subType con:ProductivityApp .
