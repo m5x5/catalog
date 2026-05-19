@@ -5,10 +5,15 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    {
-      "source": "/((?!viewer|assets|node_modules|catalog-.*|favicon|.*\\..*).*)",
-      "destination": "/index.html"
-    }
+    { "source": "/learning", "destination": "/index.html" },
+    { "source": "/participation", "destination": "/index.html" },
+    { "source": "/apps", "destination": "/index.html" },
+    { "source": "/libraries", "destination": "/index.html" },
+    { "source": "/people", "destination": "/index.html" },
+    { "source": "/drafts", "destination": "/index.html" },
+    { "source": "/edits", "destination": "/index.html" },
+    { "source": "/submissions", "destination": "/index.html" },
+    { "source": "/flags", "destination": "/index.html" }
   ],
   "headers": [
     {
