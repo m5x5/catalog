@@ -8,6 +8,7 @@ import { getShowMine, setShowMine, getShowOthers, setShowOthers, refreshOverlays
 import { draftCount } from './drafts.js';
 import { editRequestCount } from './editRequests.js';
 import { flagCount } from './flags.js';
+import { startPodSync } from './podSync.js';
 
 const FILTER_KEY = 'catalog.onlyWithLink';
 const HIDE_FLAGGED_KEY = 'catalog.hideFlagged';
@@ -78,6 +79,9 @@ function setStoredIdp(v){ localStorage.setItem('catalog.idp', v); }
 
 function onSessionStateChange(){
   renderAuthUi();
+  if(session && session.isActive){
+    startPodSync().catch(e => console.warn('podSync start failed', e));
+  }
 }
 
 function renderAuthUi(){

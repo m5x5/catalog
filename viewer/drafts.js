@@ -53,3 +53,6 @@ export function deleteDraft(id){
 export function draftCount(){
   return load().length;
 }
+
+export function getRawDrafts(){ return load(); }
+export function setRawDrafts(list){ save(Array.isArray(list) ? list : []); }

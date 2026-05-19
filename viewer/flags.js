@@ -63,3 +63,6 @@ export function addFlag({ subject, label, reason, note, webId }){
 export function removeFlag(id){
   save(load().filter(f => f.id !== id));
 }
+
+export function getRawFlags(){ return load(); }
+export function setRawFlags(list){ save(Array.isArray(list) ? list : []); }

@@ -50,3 +50,6 @@ export function deleteEditRequest(id){
 export function editRequestCount(){
   return load().length;
 }
+
+export function getRawEditRequests(){ return load(); }
+export function setRawEditRequests(list){ save(Array.isArray(list) ? list : []); }

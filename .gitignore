@@ -18,3 +18,4 @@ catalog-shacl.ttl
 /.idea
 
 dist/
+.vercel
