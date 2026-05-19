@@ -16,3 +16,5 @@ catalog-shacl.ttl
 /node_modules
 /test/tmp
 /.idea
+
+dist/

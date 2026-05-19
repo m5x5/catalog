@@ -4,29 +4,159 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Solid Resources Catalog</title>
-<!--
-<script type="module" src='https://cdn.jsdelivr.net/npm/mashlib@latest/dist/solid-logic.min.js'></script>
-<script type="module" src='https://cdn.jsdelivr.net/npm/mashlib@latest/dist/solid-ui.min.js'></script>
--->
+<!-- auth.js MUST load before mashlib so its top-level redirect handler runs
+     before mashlib's Inrupt auth init can clear our sessionStorage values. -->
+<script type="importmap">
+{
+  "imports": {
+    "lucide": "/node_modules/lucide/dist/esm/lucide.mjs",
+    "lit": "/node_modules/lit/index.js",
+    "lit/": "/node_modules/lit/",
+    "lit-html": "/node_modules/lit-html/lit-html.js",
+    "lit-html/": "/node_modules/lit-html/",
+    "lit-element": "/node_modules/lit-element/lit-element.js",
+    "lit-element/": "/node_modules/lit-element/",
+    "@lit/reactive-element": "/node_modules/@lit/reactive-element/reactive-element.js",
+    "@lit/reactive-element/": "/node_modules/@lit/reactive-element/"
+  },
+  "scopes": {
+    "/node_modules/lucide/": {
+      "./createElement.mjs": "/node_modules/lucide/dist/esm/createElement.mjs",
+      "./replaceElement.mjs": "/node_modules/lucide/dist/esm/replaceElement.mjs",
+      "./iconsAndAliases.mjs": "/node_modules/lucide/dist/esm/iconsAndAliases.mjs",
+      "./defaultAttributes.mjs": "/node_modules/lucide/dist/esm/defaultAttributes.mjs"
+    }
+  }
+}
+</script>
+<script type="module" src='/viewer/auth.js'></script>
+<script type="module" src='/viewer/icons.js'></script>
+<script type="module" src='/viewer/solid-ui.js'></script>
 <script type="module" src='https://cdn.jsdelivr.net/npm/mashlib@latest/dist/mashlib.min.js'></script>
 
 
-  <link rel="stylesheet" type="text/css" href="./viewer/viewer.css">  
-  <link rel="stylesheet" type="text/css" href="./viewer/forms.css">  
+  <style>
+    body { margin: 0; }
+    .nav-bar a:hover { opacity: 0.85; }
+    .nav-auth { display: inline-flex; gap: 0.5rem; align-items: center; }
+    .nav-auth button {
+      background: #ffffff;
+      color: #2d2454;
+      border: none;
+      border-radius: 0.4em;
+      padding: 0;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .nav-auth button.secondary {
+      background: transparent;
+      color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+    .nav-account { position: relative; }
+    .nav-avatar {
+      width: 44px;
+      height: 44px;
+      max-width: 50px;
+      max-height: 50px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.5);
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      line-height: 1;
+    }
+    .nav-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .nav-avatar:focus { outline: 2px solid #fff; outline-offset: 2px; }
+    .nav-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      min-width: 240px;
+      background: #fff;
+      color: #161616;
+      border: 1px solid #d8dade;
+      border-radius: 0.5em;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+      padding: 0.35em;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15em;
+    }
+    .nav-menu[hidden] { display: none; }
+    .nav-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      padding: 0.55em 0.7em;
+      border: none;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      text-align: left;
+      width: 100%;
+      border-radius: 0.35em;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .nav-menu-item:hover { background: #f0f1f4; }
+    .nav-menu-webid {
+      font-size: 0.85em;
+      color: #4a4a4a;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .nav-menu-filter { cursor: pointer; }
+    .nav-menu-filter input { accent-color: #1565d8; }
+    .nav-menu-logout { color: #b04444; }
+    .nav-menu-divider {
+      height: 1px;
+      background: #e6e8ec;
+      margin: 0.2em 0;
+    }
+  </style>
+  <link rel="stylesheet" type="text/css" href="/viewer/viewer.css">
+  <link rel="stylesheet" type="text/css" href="/viewer/forms.css">
   <link rel="icon" href="https://solidproject.org/assets/img/solid-emblem.svg" type="image/svg+xml"> 
   <meta name="thumbnail" content="https://solidproject.org/assets/img/solid-emblem.svg"> 
 </head>
 <body>
 <div id="main-content">
-  <div class="sol-header">
-    <img src="./assets/logo.svg" class="logo">
-    <span class="sol-header-content">
-      <b style="display:inline-block;padding-left:1rem;padding-right:1rem;"> Solid Resources Catalog </b>
-      <sol-catalog-search class="search-input"><input type="text"> 
-      <button class="search-button">search</button></sol-catalog-search>
-      <button class="keyword-index-button">keyword index</button>
-      <button class="new-record-button">new record</button>
-      <button class="about-button" source="./catalog-about.html">about</button>
+  <div class="nav-bar" style="display:flex;align-items:center;gap:1rem;min-height:60px;background:#2d2454;padding:0 1rem;color:#fff;">
+    <a href="/" aria-label="Home" style="display:inline-flex;align-items:center;gap:0.6rem;color:#fff;text-decoration:none;">
+      <img src="/assets/logo.svg" alt="" style="height:36px;display:block;">
+      <b class="sol-title" style="font-size:1.2rem;font-weight:600;color:#fff;line-height:1;margin:0;display:inline-flex;align-items:center;">Solid Resources Catalog</b>
+    </a>
+    <span style="flex:1 1 auto;"></span>
+    <div class="nav-auth"></div>
+  </div>
+
+  <div class="sub-header">
+    <nav class="sol-sections" aria-label="Sections">
+      <a href="/learning" data-section="learning-resources">Learning</a>
+      <a href="/participation" data-section="participation-opportunities">Participation</a>
+      <a href="/apps" data-section="apps-and-services">Apps & Services</a>
+      <a href="/libraries" data-section="software-libraries">Libraries</a>
+      <a href="/people" data-section="organizations-and-people">Orgs & People</a>
+    </nav>
+    <sol-catalog-search class="search-input">
+      <input type="text" placeholder="Search the catalog">
+      <button class="search-button" aria-label="search" title="search">⌕</button>
+    </sol-catalog-search>
+    <span class="sub-header-actions">
+      <solid-ui-button class="keyword-index-button" label="Keyword index" size="md"></solid-ui-button>
+      <solid-ui-button class="new-record-button" label="New record" variant="primary" size="md" icon="plus"></solid-ui-button>
+      <solid-ui-button class="about-button" label="About" size="md"></solid-ui-button>
     </span>
   </div>
 
@@ -45,7 +175,6 @@
 </div>
 
 <div id="help" style="display:none">
-<button style="text-align:right" onclick="document.body.classList.remove('showHelp')"><<</button>
 <h1 style="font-size:1.4em !important">Solid Resources Catalog</h1>
 
 <p>This catalog is a work in progress and not all data has been recently updated.  Please help by updataing records for yourself, your organization, and your projects.</p>
@@ -68,10 +197,12 @@
     var sh;
   </script>
   <script type="module">
-    import {viewer,showSubtypes} from './viewer/viewer.js';
+    import {viewer,showSubtypes} from '/viewer/viewer.js';
+    import {initAuth} from '/viewer/auth.js';
     document.addEventListener('DOMContentLoaded', async () => {
       sh = showSubtypes;
       await viewer();
+      initAuth().catch(e => console.warn('auth init failed:', e));
     });
   </script>
 
