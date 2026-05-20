@@ -63,8 +63,61 @@ function currentSectionSlug(){
 export async function viewer(){
   addListeners();
   setupRouter();
+  setupRecordSheet();
   await render();
 }
+
+// On mobile the record detail (#right-bottom) is presented as a bottom sheet.
+// Track when it has content and toggle body.record-open + a tap-to-close
+// backdrop. Desktop ignores this (the CSS sheet rules are mobile-only).
+function setupRecordSheet(){
+  const bottom = document.getElementById('right-bottom');
+  if(!bottom) return;
+
+  let backdrop = document.querySelector('.sheet-backdrop');
+  if(!backdrop){
+    backdrop = document.createElement('div');
+    backdrop.className = 'sheet-backdrop';
+    backdrop.addEventListener('click', closeRecordSheet);
+    document.body.appendChild(backdrop);
+  }
+
+  let closeBtn = bottom.querySelector('.sheet-close');
+  if(!closeBtn){
+    closeBtn = document.createElement('button');
+    closeBtn.type = 'button';
+    closeBtn.className = 'sheet-close';
+    closeBtn.setAttribute('aria-label', 'Close');
+    closeBtn.textContent = '✕';
+    closeBtn.addEventListener('click', closeRecordSheet);
+  }
+  // Keep the close button as the first child whenever content changes.
+  const ensureClose = () => {
+    if(bottom.childElementCount > 0 && bottom.firstChild !== closeBtn){
+      bottom.insertBefore(closeBtn, bottom.firstChild);
+    }
+  };
+  bottom._ensureClose = ensureClose;
+
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && document.body.classList.contains('record-open')) closeRecordSheet();
+  });
+
+  const sync = () => {
+    if(bottom._ensureClose) bottom._ensureClose();
+    const hasContent = bottom.querySelector(':scope > :not(.sheet-close)') != null;
+    document.body.classList.toggle('record-open', hasContent);
+  };
+  new MutationObserver(sync).observe(bottom, { childList: true });
+  sync();
+}
+
+function closeRecordSheet(){
+  const bottom = document.getElementById('right-bottom');
+  if(bottom) bottom.innerHTML = '';
+  document.body.classList.remove('record-open');
+}
+window.closeRecordSheet = closeRecordSheet;
 
 async function render(){
   const left = document.getElementById('left-column');

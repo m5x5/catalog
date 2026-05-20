@@ -913,6 +913,10 @@ body.showHelp #help {
   border-color: var(--border-strong);
 }
 
+/* Bottom-sheet (mobile only); inert on desktop. */
+.sheet-backdrop { display: none; }
+.sheet-close { display: none; }
+
 /* ============================================================
    Mobile / responsive
    ============================================================ */
@@ -947,6 +951,62 @@ body.showHelp #help {
   #main {
     grid-template-columns: 1fr;
     padding: 0.75rem;
+  }
+
+  /* Record detail opens as a bottom sheet. */
+  body.record-open .sheet-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: var(--overlay-bg);
+    z-index: 900;
+  }
+  body.record-open #right-bottom {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 901;
+    max-height: 85vh;
+    overflow: auto;
+    margin: 0;
+    background: var(--bg);
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    box-shadow: 0 -8px 32px rgba(0,0,0,0.4);
+    padding: 0.5rem 0.9rem 1.25rem;
+    animation: sheet-up 0.2s ease;
+  }
+  @keyframes sheet-up {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+  body.record-open #right-bottom .sheet-close {
+    display: flex;
+    position: sticky;
+    top: 0;
+    margin-left: auto;
+    align-items: center;
+    justify-content: center;
+    width: 2.2em;
+    height: 2.2em;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--bg-elev);
+    color: var(--text);
+    font-size: 1.1em !important;
+    cursor: pointer;
+    z-index: 1;
+  }
+  /* Drag-handle affordance at the top of the sheet. */
+  body.record-open #right-bottom::before {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border-strong);
+    margin: 0.25rem auto 0.5rem;
   }
   #left-column {
     border-bottom: 1px solid var(--border);
