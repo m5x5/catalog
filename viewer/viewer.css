@@ -996,6 +996,6 @@ body.showHelp #help {
   form.record select { width: 100%; box-sizing: border-box; }
   form.record .fieldDescription { padding-left: 0 !important; color: var(--text-muted); }
 
-  .nav-bar .sol-title { display: none; } /* keep just the logo on very small screens */
+  .nav-bar .sol-title { font-size: 0.95rem; }
   .cat-grid { grid-template-columns: 1fr; }
 }
