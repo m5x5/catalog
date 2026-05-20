@@ -21,6 +21,13 @@ function hostFromUrl(u){
   try { return new URL(u).host.replace(/^www\./,''); } catch(e){ return u; }
 }
 
+function isPersonOrOrg(subjectUrl){
+  try {
+    const types = store.each($rdf.sym(subjectUrl), source().isa);
+    return types.some(t => /Person|Organization/i.test(t.value));
+  } catch { return false; }
+}
+
 function formatSubmissionDate(iso){
   const d = new Date(iso);
   if(isNaN(d.getTime())) return '';
@@ -1218,7 +1225,23 @@ function buildCardGrid(records){
       const rec = findRecord(r.link);
       showRecord(document.getElementById('right-bottom'), r.link, rec);
     });
-    card.appendChild(title);
+    // Show an avatar/logo when the record has one (circular for people & orgs).
+    const logo = findFieldValue(r.link, 'logo');
+    if(logo){
+      const head = document.createElement('div');
+      head.className = 'cat-card-head';
+      const img = document.createElement('img');
+      img.className = 'cat-card-avatar' + (isPersonOrOrg(r.link) ? ' is-round' : '');
+      img.src = logo;
+      img.alt = '';
+      img.loading = 'lazy';
+      img.addEventListener('error', () => head.classList.add('avatar-failed'));
+      head.appendChild(img);
+      head.appendChild(title);
+      card.appendChild(head);
+    } else {
+      card.appendChild(title);
+    }
     const description = findFieldValue(r.link, 'description');
     if(description){
       const desc = document.createElement('p');

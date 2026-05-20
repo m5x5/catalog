@@ -215,6 +215,26 @@ body.root-landing #main {
   gap: 0.35em;
   min-width: 0;
 }
+.cat-card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  min-width: 0;
+}
+.cat-card-avatar {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  object-fit: contain;
+  border-radius: 0.3em;
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+.cat-card-avatar.is-round {
+  border-radius: 50%;
+  object-fit: cover;
+}
+.cat-card-head.avatar-failed .cat-card-avatar { display: none; }
 .cat-card-title {
   font-weight: 700;
   color: var(--text-strong) !important;
