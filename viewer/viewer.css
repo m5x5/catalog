@@ -43,7 +43,7 @@
 
 * {
   font-size: 1em !important;
-  font-family: Sans-Serif !important;
+  font-family: 'DM Sans', system-ui, sans-serif !important;
   -webkit-tap-highlight-color: transparent;
 }
 li { margin-top: 0.5em; margin-bottom: 0.5em; }
@@ -94,7 +94,7 @@ body.root-landing #main {
   flex-direction: column;
   gap: 0.5em;
   background: var(--bg-elev);
-  border: 1px solid var(--border);
+  border: none;
   border-radius: 0.6em;
   padding: 1.25em;
   color: var(--text) !important;
@@ -102,7 +102,6 @@ body.root-landing #main {
   transition: border-color 0.15s, background 0.15s;
 }
 .root-card:hover {
-  border-color: var(--accent);
   background: var(--accent-soft);
 }
 .root-card-head {
@@ -208,7 +207,7 @@ body.root-landing #main {
 .cat-card {
   position: relative;
   background: var(--bg-elev);
-  border: 1px solid var(--border);
+  border: none;
   border-radius: 0.4em;
   padding: 0.7em 0.85em;
   display: flex;
@@ -246,14 +245,20 @@ body.root-landing #main {
 .status-filter-bar {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.4em;
-  margin-bottom: 0.85em;
+  margin-top: 1.25em;
+  padding-top: 1em;
+  border-top: 1px solid var(--border);
 }
 .status-filter-label {
-  font-size: 0.85em !important;
+  flex: 0 0 100%;
+  font-size: 0.8em !important;
   color: var(--text-muted);
-  font-weight: 600;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.2em;
 }
 .status-chip {
   font-size: 0.8em !important;
@@ -339,14 +344,12 @@ body.root-landing #main {
 .cat-card-draft,
 .cat-card-edit {
   position: relative;
-  border-style: dashed;
 }
 .cat-card-clickable {
   cursor: pointer;
   transition: border-color 0.12s ease, background 0.12s ease, transform 0.12s ease;
 }
 .cat-card-clickable:hover {
-  border-color: var(--accent);
   background: var(--accent-soft);
 }
 .cat-card-clickable:focus-visible {
@@ -609,7 +612,7 @@ body.submissions-view .cat-grid { grid-template-columns: 1fr; }
 .record {
   padding: 1em;
   padding-bottom: 0.5em;
-  border: 1px solid var(--border-strong);
+  border: none;
   border-radius: 0.4em;
   background: var(--bg-elev);
 }

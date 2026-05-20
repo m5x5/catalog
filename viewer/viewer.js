@@ -1006,8 +1006,7 @@ function showCategoryHighlights(){
   const wrap = document.createElement('div');
   wrap.className = 'category-highlights';
   const allRecords = sections.flatMap(s => s.records);
-  const statusBar = buildStatusFilterBar(allRecords);
-  if(statusBar) wrap.appendChild(statusBar);
+  placeStatusFilter(allRecords);
   const grid = document.createElement('div');
   grid.className = 'cat-grid';
   wrap.appendChild(grid);
@@ -1252,8 +1251,7 @@ export function showMainCategory(label, subtypeUris){
   heading.innerHTML = `<b>${label}</b> <span class="link-head-count">${records.length}</span>`;
   wrap.appendChild(heading);
   _lastView = () => showMainCategory(label, subtypeUris);
-  const statusBar = buildStatusFilterBar(records);
-  if(statusBar) wrap.appendChild(statusBar);
+  placeStatusFilter(records);
   wrap.appendChild(buildCardGrid(records));
   linkDisplay.appendChild(wrap);
 }
@@ -1271,8 +1269,7 @@ export function showSubtypes(subtype,label){
   heading.className = 'link-head';
   heading.innerHTML = `<b>${label}</b>`;
   wrap.appendChild(heading);
-  const statusBar = buildStatusFilterBar(records);
-  if(statusBar) wrap.appendChild(statusBar);
+  placeStatusFilter(records);
   wrap.appendChild(buildCardGrid(records));
   linkDisplay.appendChild(wrap);
   _lastView = () => showSubtypes(subtype, label);
@@ -1314,16 +1311,21 @@ function distinctStatuses(records){
   }
   return [...s].sort();
 }
-/** A row of toggle chips to hide/show records by status. */
-function buildStatusFilterBar(records){
+/** Render the status filter into the sidebar (below the TOC). Removes any
+ *  previous instance. Hidden on mobile along with the rest of the sidebar. */
+function placeStatusFilter(records){
+  const sidebar = document.getElementById('left-column');
+  if(!sidebar) return;
+  const existing = sidebar.querySelector('.status-filter-bar');
+  if(existing) existing.remove();
   const statuses = distinctStatuses(records);
-  if(statuses.length < 2) return null; // nothing meaningful to filter
+  if(statuses.length < 2) return; // nothing meaningful to filter
   const hidden = getHiddenStatuses();
   const bar = document.createElement('div');
   bar.className = 'status-filter-bar';
-  const label = document.createElement('span');
+  const label = document.createElement('div');
   label.className = 'status-filter-label';
-  label.textContent = 'Status:';
+  label.textContent = 'Filter by status';
   bar.appendChild(label);
   for(const st of statuses){
     const chip = document.createElement('button');
@@ -1334,7 +1336,7 @@ function buildStatusFilterBar(records){
     chip.addEventListener('click', () => toggleHiddenStatus(st));
     bar.appendChild(chip);
   }
-  return bar;
+  sidebar.appendChild(bar);
 }
 document.addEventListener('catalog-filter-changed', () => rerenderView());
 document.addEventListener('catalog-overlay-changed', () => render());

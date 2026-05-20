@@ -75,6 +75,8 @@
       line-height: 1;
     }
     .nav-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .nav-avatar-initials { display: inline-flex; align-items: center; justify-content: center; }
+    .nav-avatar-initials svg { width: 20px; height: 20px; }
     .nav-avatar:focus { outline: 2px solid #fff; outline-offset: 2px; }
     .nav-menu {
       position: absolute;
@@ -112,12 +114,54 @@
     .dev-banner {
       background: #b45309;
       color: #fff;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75em;
+      flex-wrap: wrap;
       font-size: 0.85rem;
       padding: 0.4em 1em;
       line-height: 1.35;
     }
-    .dev-banner a { color: #fff; text-decoration: underline; font-weight: 600; }
+    .dev-banner-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75em;
+      flex-wrap: wrap;
+    }
+    .dev-banner-btn {
+      display: inline-flex;
+      align-items: center;
+      background: #fff;
+      border: 1px solid #fff;
+      color: #b45309 !important;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 0.15em 0.7em;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .dev-banner-btn { gap: 0.35em; }
+    .dev-banner-btn-icon { display: inline-flex; }
+    .dev-banner-btn-icon svg { width: 12px; height: 12px; }
+    .dev-banner-btn:hover { background: #fff7ed; border-color: #fff7ed; }
+    .dev-banner-close {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      padding: 0;
+      color: #fff !important;
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+      flex-shrink: 0;
+      opacity: 0.85;
+    }
+    .dev-banner-close:hover { opacity: 1; }
+    html.dev-banner-hidden .dev-banner { display: none !important; }
     .nav-menu-webid {
       font-size: 0.85em;
       color: #4a4a4a;
@@ -134,6 +178,21 @@
       margin: 0.2em 0;
     }
   </style>
+  <script>
+    // Hide the dev banner before first paint if it was dismissed (avoids a flash/jump).
+    try {
+      if (localStorage.getItem('catalog.devBannerDismissed') === '1') {
+        document.documentElement.classList.add('dev-banner-hidden');
+      }
+    } catch (e) {}
+    function dismissDevBanner() {
+      try { localStorage.setItem('catalog.devBannerDismissed', '1'); } catch (e) {}
+      document.documentElement.classList.add('dev-banner-hidden');
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap">
   <link rel="stylesheet" type="text/css" href="/viewer/viewer.css">
   <link rel="stylesheet" type="text/css" href="/viewer/forms.css">
   <link rel="icon" href="https://solidproject.org/assets/img/solid-emblem.svg" type="image/svg+xml"> 
@@ -141,8 +200,11 @@
 </head>
 <body>
 <div class="dev-banner" role="note">
-  <span>⚠️ This is a development version. The official catalog is at
-    <a href="https://solidproject.solidcommunity.net/catalog/" target="_blank" rel="noopener">solidproject.solidcommunity.net/catalog</a>.</span>
+  <div class="dev-banner-main">
+    <span>This is a development version.</span>
+    <a class="dev-banner-btn" href="https://solidproject.solidcommunity.net/catalog/" target="_blank" rel="noopener">Official catalog <i data-lucide="external-link" class="dev-banner-btn-icon"></i></a>
+  </div>
+  <button class="dev-banner-close" type="button" aria-label="Dismiss banner" onclick="dismissDevBanner()">✕</button>
 </div>
 <div id="main-content">
   <div class="nav-bar" style="display:flex;align-items:center;gap:1rem;min-height:60px;background:#2d2454;padding:0 1rem;color:#fff;">

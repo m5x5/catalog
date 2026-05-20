@@ -9,6 +9,7 @@ import { draftCount } from './drafts.js';
 import { editRequestCount } from './editRequests.js';
 import { flagCount } from './flags.js';
 import { startPodSync } from './podSync.js';
+import { renderIcons } from './icons.js';
 
 const FILTER_KEY = 'catalog.onlyWithLink';
 const HIDE_FLAGGED_KEY = 'catalog.hideFlagged';
@@ -89,19 +90,20 @@ function renderAuthUi(){
   if(!slot) return;
   slot.innerHTML = '';
   if(!session || !session.isActive){
-    const loginBtn = document.createElement('button');
-    loginBtn.type = 'button';
-    loginBtn.textContent = 'Log In';
+    const loginBtn = document.createElement('solid-ui-button');
+    loginBtn.setAttribute('label', 'Log In');
+    loginBtn.setAttribute('variant', 'primary');
+    loginBtn.setAttribute('size', 'md');
     loginBtn.addEventListener('click', () => { login().catch(console.error); });
-    const signupBtn = document.createElement('button');
-    signupBtn.type = 'button';
-    signupBtn.className = 'secondary';
-    signupBtn.textContent = 'Sign Up';
+    const signupBtn = document.createElement('solid-ui-button');
+    signupBtn.setAttribute('label', 'Sign Up');
+    signupBtn.setAttribute('size', 'md');
     signupBtn.addEventListener('click', () => { window.open('https://solidproject.org/users/get-a-pod', '_blank'); });
     slot.appendChild(loginBtn);
     slot.appendChild(signupBtn);
   }
   slot.appendChild(buildAvatarMenu());
+  renderIcons(slot);
   if(session && session.isActive){
     fetchProfileImage(session.webId).then(url => {
       if(!url) return;
@@ -127,7 +129,12 @@ function buildAvatarMenu(){
   img.style.display = 'none';
   const initials = document.createElement('span');
   initials.className = 'nav-avatar-initials';
-  initials.textContent = avatarInitials(session?.webId);
+  if(session && session.webId){
+    initials.textContent = avatarInitials(session.webId);
+  } else {
+    // Logged out: show a Lucide menu icon instead of a glyph.
+    initials.innerHTML = '<i data-lucide="menu"></i>';
+  }
   btn.appendChild(img);
   btn.appendChild(initials);
 
