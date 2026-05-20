@@ -1,6 +1,6 @@
 import {showRecord} from './showRecord.js';
 import {makeTOC} from './makeTOC.js';
-import {findFullText,findKeywords,findRecord,findRecordsBySubtype,findName,findRecordsByKeyword,findByName,showPage,store,source} from './utils.js';
+import {findFullText,findKeywords,findRecord,findRecordsBySubtype,findName,findRecordsByKeyword,findByName,findPrefLabel,showPage,store,source} from './utils.js';
 import {listDrafts, deleteDraft, getDraft, draftCount} from './drafts.js';
 import {listEditRequests, deleteEditRequest, editRequestCount} from './editRequests.js';
 import {fetchPublishLog, fetchSubmission, prefetchSubmission, summariseSubmission, parseSubmissionFields, publishLogUrl} from './submissionLog.js';
@@ -982,11 +982,14 @@ function showCategoryHighlights(){
     const label = a.textContent.trim();
     const records = findRecordsBySubtype(href);
     if(!records.length) continue;
-    sections.push({label, href, records: records.slice(0, 6)});
+    sections.push({label, href, records});
   }
   if(!sections.length) return;
   const wrap = document.createElement('div');
   wrap.className = 'category-highlights';
+  const allRecords = sections.flatMap(s => s.records);
+  const statusBar = buildStatusFilterBar(allRecords);
+  if(statusBar) wrap.appendChild(statusBar);
   const grid = document.createElement('div');
   grid.className = 'cat-grid';
   wrap.appendChild(grid);
@@ -1228,6 +1231,8 @@ export function showMainCategory(label, subtypeUris){
   heading.innerHTML = `<b>${label}</b> <span class="link-head-count">${records.length}</span>`;
   wrap.appendChild(heading);
   _lastView = () => showMainCategory(label, subtypeUris);
+  const statusBar = buildStatusFilterBar(records);
+  if(statusBar) wrap.appendChild(statusBar);
   wrap.appendChild(buildCardGrid(records));
   linkDisplay.appendChild(wrap);
 }
@@ -1245,6 +1250,8 @@ export function showSubtypes(subtype,label){
   heading.className = 'link-head';
   heading.innerHTML = `<b>${label}</b>`;
   wrap.appendChild(heading);
+  const statusBar = buildStatusFilterBar(records);
+  if(statusBar) wrap.appendChild(statusBar);
   wrap.appendChild(buildCardGrid(records));
   linkDisplay.appendChild(wrap);
   _lastView = () => showSubtypes(subtype, label);
@@ -1254,6 +1261,60 @@ let _lastView = null;
 function rerenderView(){ if(_lastView) _lastView(); }
 function isOnlyWithLinks(){ return window.catalogFilter?.getOnlyWithLink?.() === true; }
 function isHideFlagged(){ return window.catalogFilter?.getHideFlagged?.() === true; }
+
+// --- Status helpers -------------------------------------------------------
+function recordStatusLabel(subjectUrl){
+  const raw = findFieldValue(subjectUrl, 'status');
+  if(!raw) return '';
+  // status is a SKOS concept URI; resolve its prefLabel.
+  const label = findPrefLabel(raw);
+  return (label || raw.replace(/.*[#/]/, '')).trim();
+}
+const HIDDEN_STATUS_KEY = 'catalog.hiddenStatuses';
+function getHiddenStatuses(){
+  try { return new Set(JSON.parse(localStorage.getItem(HIDDEN_STATUS_KEY) || '[]')); }
+  catch { return new Set(); }
+}
+function setHiddenStatuses(set){
+  localStorage.setItem(HIDDEN_STATUS_KEY, JSON.stringify([...set]));
+}
+function toggleHiddenStatus(status){
+  const set = getHiddenStatuses();
+  if(set.has(status)) set.delete(status); else set.add(status);
+  setHiddenStatuses(set);
+  rerenderView();
+}
+/** Distinct status labels present across the given records, sorted. */
+function distinctStatuses(records){
+  const s = new Set();
+  for(const r of records){
+    const lbl = recordStatusLabel(r.link);
+    if(lbl) s.add(lbl);
+  }
+  return [...s].sort();
+}
+/** A row of toggle chips to hide/show records by status. */
+function buildStatusFilterBar(records){
+  const statuses = distinctStatuses(records);
+  if(statuses.length < 2) return null; // nothing meaningful to filter
+  const hidden = getHiddenStatuses();
+  const bar = document.createElement('div');
+  bar.className = 'status-filter-bar';
+  const label = document.createElement('span');
+  label.className = 'status-filter-label';
+  label.textContent = 'Status:';
+  bar.appendChild(label);
+  for(const st of statuses){
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'status-chip' + (hidden.has(st) ? ' off' : '');
+    chip.textContent = st;
+    chip.title = hidden.has(st) ? `Show ${st}` : `Hide ${st}`;
+    chip.addEventListener('click', () => toggleHiddenStatus(st));
+    bar.appendChild(chip);
+  }
+  return bar;
+}
 document.addEventListener('catalog-filter-changed', () => rerenderView());
 document.addEventListener('catalog-overlay-changed', () => render());
 function buildCardGrid(records){
@@ -1266,9 +1327,20 @@ function buildCardGrid(records){
   if(isHideFlagged()){
     filtered = filtered.filter(r => flagsForSubject(r.link).length === 0);
   }
+  const hiddenStatuses = getHiddenStatuses();
+  if(hiddenStatuses.size){
+    filtered = filtered.filter(r => !hiddenStatuses.has(recordStatusLabel(r.link)));
+  }
   for(const r of filtered){
     const card = document.createElement('article');
     card.className = 'cat-card';
+    const statusLabel = recordStatusLabel(r.link);
+    if(statusLabel){
+      const sb = document.createElement('span');
+      sb.className = 'card-status status-' + statusLabel.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      sb.textContent = statusLabel;
+      card.appendChild(sb);
+    }
     const title = document.createElement('a');
     title.className = 'cat-card-title';
     title.href = r.link;

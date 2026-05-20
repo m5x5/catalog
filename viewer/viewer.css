@@ -215,6 +215,61 @@ body.root-landing #main {
   gap: 0.35em;
   min-width: 0;
 }
+.card-status {
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+  font-size: 0.68em !important;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.12em 0.5em;
+  border-radius: 999px;
+  background: var(--chip-bg);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+.card-status.status-production,
+.card-status.status-stable,
+.card-status.status-active { background: rgba(22,163,74,0.15); color: #16a34a; border-color: transparent; }
+.card-status.status-development,
+.card-status.status-beta,
+.card-status.status-alpha { background: rgba(217,119,6,0.15); color: #d97706; border-color: transparent; }
+.card-status.status-deprecated,
+.card-status.status-inactive,
+.card-status.status-abandoned { background: rgba(176,68,68,0.15); color: #b04444; border-color: transparent; }
+/* keep room so the title doesn't run under the badge */
+.cat-card:has(.card-status) .cat-card-title,
+.cat-card:has(.card-status) .cat-card-head { padding-right: 5.5em; }
+
+.status-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4em;
+  margin-bottom: 0.85em;
+}
+.status-filter-label {
+  font-size: 0.85em !important;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.status-chip {
+  font-size: 0.8em !important;
+  padding: 0.25em 0.7em;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  color: var(--link);
+  cursor: pointer;
+}
+.status-chip.off {
+  background: transparent;
+  color: var(--text-dim);
+  border-color: var(--border);
+  text-decoration: line-through;
+}
+
 .cat-card-head {
   display: flex;
   align-items: center;
