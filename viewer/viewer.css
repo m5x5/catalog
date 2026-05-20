@@ -44,6 +44,7 @@
 * {
   font-size: 1em !important;
   font-family: Sans-Serif !important;
+  -webkit-tap-highlight-color: transparent;
 }
 li { margin-top: 0.5em; margin-bottom: 0.5em; }
 b { display: inline-block; margin-top: 0.5em; }

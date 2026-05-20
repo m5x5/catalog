@@ -21,6 +21,24 @@ function hostFromUrl(u){
   try { return new URL(u).host.replace(/^www\./,''); } catch(e){ return u; }
 }
 
+function recordModified(subjectUrl){
+  const v = findFieldValue(subjectUrl, 'modified');
+  if(!v) return 0;
+  const t = new Date(v).getTime();
+  return isNaN(t) ? 0 : t;
+}
+function dedupeByName(records){
+  const byName = new Map();
+  for(const r of records){
+    const key = (r.label || r.link || '').trim().toLowerCase();
+    if(!key){ byName.set(Symbol(), r); continue; }
+    const existing = byName.get(key);
+    if(!existing || recordModified(r.link) >= recordModified(existing.link)){
+      byName.set(key, r);
+    }
+  }
+  return [...byName.values()];
+}
 function isPersonOrOrg(subjectUrl){
   try {
     const types = store.each($rdf.sym(subjectUrl), source().isa);
@@ -1334,6 +1352,10 @@ function buildCardGrid(records){
   if(hiddenStatuses.size){
     filtered = filtered.filter(r => !hiddenStatuses.has(recordStatusLabel(r.link)));
   }
+  // De-duplicate records that share the same name (e.g. an overlaid submission
+  // edit has a different subject URI than the catalog's UUID-based record).
+  // Keep the most-recently-modified version so edits replace, not duplicate.
+  filtered = dedupeByName(filtered);
   for(const r of filtered){
     const card = document.createElement('article');
     card.className = 'cat-card';
