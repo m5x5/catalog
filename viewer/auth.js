@@ -166,6 +166,16 @@ function buildAvatarMenu(){
     }
     menu.appendChild(a);
   }
+  const aboutItem = document.createElement('button');
+  aboutItem.type = 'button';
+  aboutItem.className = 'nav-menu-item nav-menu-link';
+  aboutItem.textContent = 'About';
+  aboutItem.addEventListener('click', () => {
+    menu.hidden = true;
+    btn.setAttribute('aria-expanded', 'false');
+    window.showAbout?.();
+  });
+  menu.appendChild(aboutItem);
   const divider1 = document.createElement('div'); divider1.className = 'nav-menu-divider'; menu.appendChild(divider1);
 
   const filterLabel = document.createElement('label');

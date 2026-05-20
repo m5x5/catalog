@@ -1059,11 +1059,14 @@ function addListeners(){
       e.preventDefault();
       showPage('type-chooser');
     });
-    aboutButton.addEventListener('click',(e)=>{
-      e.preventDefault();
-      showHelp();
-    });
+    if(aboutButton){
+      aboutButton.addEventListener('click',(e)=>{
+        e.preventDefault();
+        showHelp();
+      });
+    }
 }
+window.showAbout = () => showHelp();
 function goHome(){
   const searchInput = document.querySelector('.search-input input');
   if(searchInput) searchInput.value = '';
