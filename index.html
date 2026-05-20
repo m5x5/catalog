@@ -282,6 +282,15 @@
     });
   </script>
 
+  <!-- Feedback widget (floating button, bottom-right) -->
+  <script type="module" src="https://feedback.api.mpeters.dev/feedback-tracker.js"></script>
+  <feedback-tracker
+    adapter="pocketbase"
+    endpoint="https://feedback.api.mpeters.dev"
+    collection="feedback"
+    collect-email
+  ></feedback-tracker>
+
 </body>
 </html>
 
