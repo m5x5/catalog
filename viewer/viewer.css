@@ -1008,11 +1008,9 @@ body.showHelp #help {
     background: var(--border-strong);
     margin: 0.25rem auto 0.5rem;
   }
-  #left-column {
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-  }
+  /* Hide the per-section table of contents on mobile; the card grid already
+     groups every subtype, so the sidebar is redundant on small screens. */
+  #left-column { display: none !important; }
   #right-top { max-height: none; overflow: visible; }
 
   /* Submissions: stack list over preview, preview not sticky. */
