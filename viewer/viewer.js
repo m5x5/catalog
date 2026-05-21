@@ -109,9 +109,16 @@ function setupRecordSheet(){
     closeBtn.textContent = '✕';
     closeBtn.addEventListener('click', closeRecordSheet);
   }
-  // Keep the close button as the first child whenever content changes.
+  // Place the close button. For record detail, drop it into the header row
+  // (same row as the title + ⋯ menu); otherwise pin it as the first child.
   const ensureClose = () => {
-    if(bottom.childElementCount > 0 && bottom.firstChild !== closeBtn){
+    if(bottom.childElementCount === 0) return;
+    const actions = bottom.querySelector('.record-header-actions');
+    if(actions){
+      if(closeBtn.parentNode !== actions) actions.appendChild(closeBtn);
+      return;
+    }
+    if(bottom.firstChild !== closeBtn){
       bottom.insertBefore(closeBtn, bottom.firstChild);
     }
   };
@@ -189,7 +196,7 @@ function showDrafts(){
   if(bottom) bottom.innerHTML = '';
   if(!right) return;
   right.innerHTML = '';
-  document.title = 'Drafts — Solid Resources Catalog';
+  document.title = 'Drafts — Solid Catalog';
   const drafts = listDrafts();
   const wrap = document.createElement('div');
   wrap.className = 'category-highlights';
@@ -354,7 +361,7 @@ function showEditRequests(){
   if(bottom) bottom.innerHTML = '';
   if(!right) return;
   right.innerHTML = '';
-  document.title = 'Edit requests — Solid Resources Catalog';
+  document.title = 'Edit requests — Solid Catalog';
   const entries = listEditRequests();
   const wrap = document.createElement('div');
   wrap.className = 'category-highlights';
@@ -483,7 +490,7 @@ function showFlags(){
   if(bottom) bottom.innerHTML = '';
   if(!right) return;
   right.innerHTML = '';
-  document.title = 'Flags — Solid Resources Catalog';
+  document.title = 'Flags — Solid Catalog';
 
   const wrap = document.createElement('div');
   wrap.className = 'category-highlights';
@@ -580,7 +587,7 @@ async function showSubmissions(){
   }
   if(!right) return;
   right.innerHTML = '';
-  document.title = 'Submissions — Solid Resources Catalog';
+  document.title = 'Submissions — Solid Catalog';
 
   const wrap = document.createElement('div');
   wrap.className = 'category-highlights';
@@ -875,7 +882,7 @@ function teardownCurrentView(){
   const left = document.getElementById('left-column');
   if(left) left.style.display = '';
   for(const el of document.querySelectorAll('.sol-sections a.active')) el.classList.remove('active');
-  document.title = 'Solid Resources Catalog';
+  document.title = 'Solid Catalog';
   const right = document.getElementById('right-top');
   const bottom = document.getElementById('right-bottom');
   if(right) right.innerHTML = '';
@@ -983,7 +990,7 @@ function applySection(){
   }
   const sectionLabel = document.querySelector('.sol-sections a.active');
   if(sectionLabel){
-    document.title = `${sectionLabel.textContent} — Solid Resources Catalog`;
+    document.title = `${sectionLabel.textContent} — Solid Catalog`;
   }
 }
 
@@ -1003,26 +1010,28 @@ function showCategoryHighlights(){
     sections.push({label, href, records});
   }
   if(!sections.length) return;
+  sections.forEach((s, i) => { s.headingId = 'cat-section-' + i; });
   const wrap = document.createElement('div');
   wrap.className = 'category-highlights';
   const allRecords = sections.flatMap(s => s.records);
-  placeStatusFilter(allRecords);
+  const chips = buildCategoryChips(sections);
+  if(chips) wrap.appendChild(chips);
+  const statusBar = buildStatusFilterBar(allRecords);
+  if(statusBar) wrap.appendChild(statusBar);
   const grid = document.createElement('div');
   grid.className = 'cat-grid';
   wrap.appendChild(grid);
   for(const s of sections){
     const catHeading = document.createElement('h3');
     catHeading.className = 'cat-heading';
-    const catLink = document.createElement('a');
-    catLink.href = s.href;
-    catLink.textContent = s.label;
-    catLink.addEventListener('click',(e)=>{ e.preventDefault(); sh(s.href, s.label); });
-    catHeading.appendChild(catLink);
+    catHeading.id = s.headingId;
+    catHeading.textContent = s.label;
     grid.appendChild(catHeading);
     const subGrid = buildCardGrid(s.records);
     for(const card of [...subGrid.children]){ grid.appendChild(card); }
   }
   right.appendChild(wrap);
+  if(chips) setupScrollSpy(sections, chips);
 }
 function addListeners(){
     document.addEventListener('keydown',(e)=>{
@@ -1251,7 +1260,8 @@ export function showMainCategory(label, subtypeUris){
   heading.innerHTML = `<b>${label}</b> <span class="link-head-count">${records.length}</span>`;
   wrap.appendChild(heading);
   _lastView = () => showMainCategory(label, subtypeUris);
-  placeStatusFilter(records);
+  const statusBar = buildStatusFilterBar(records);
+  if(statusBar) wrap.appendChild(statusBar);
   wrap.appendChild(buildCardGrid(records));
   linkDisplay.appendChild(wrap);
 }
@@ -1269,7 +1279,8 @@ export function showSubtypes(subtype,label){
   heading.className = 'link-head';
   heading.innerHTML = `<b>${label}</b>`;
   wrap.appendChild(heading);
-  placeStatusFilter(records);
+  const statusBar = buildStatusFilterBar(records);
+  if(statusBar) wrap.appendChild(statusBar);
   wrap.appendChild(buildCardGrid(records));
   linkDisplay.appendChild(wrap);
   _lastView = () => showSubtypes(subtype, label);
@@ -1290,8 +1301,12 @@ function recordStatusLabel(subjectUrl){
 }
 const HIDDEN_STATUS_KEY = 'catalog.hiddenStatuses';
 function getHiddenStatuses(){
-  try { return new Set(JSON.parse(localStorage.getItem(HIDDEN_STATUS_KEY) || '[]')); }
-  catch { return new Set(); }
+  try {
+    const raw = localStorage.getItem(HIDDEN_STATUS_KEY);
+    // Default (no preference saved yet): hide archived items.
+    if(raw === null) return new Set(['Archived']);
+    return new Set(JSON.parse(raw));
+  } catch { return new Set(['Archived']); }
 }
 function setHiddenStatuses(set){
   localStorage.setItem(HIDDEN_STATUS_KEY, JSON.stringify([...set]));
@@ -1311,21 +1326,16 @@ function distinctStatuses(records){
   }
   return [...s].sort();
 }
-/** Render the status filter into the sidebar (below the TOC). Removes any
- *  previous instance. Hidden on mobile along with the rest of the sidebar. */
-function placeStatusFilter(records){
-  const sidebar = document.getElementById('left-column');
-  if(!sidebar) return;
-  const existing = sidebar.querySelector('.status-filter-bar');
-  if(existing) existing.remove();
+/** Build the status filter chip row (or null if <2 statuses present). */
+function buildStatusFilterBar(records){
   const statuses = distinctStatuses(records);
-  if(statuses.length < 2) return; // nothing meaningful to filter
+  if(statuses.length < 2) return null; // nothing meaningful to filter
   const hidden = getHiddenStatuses();
   const bar = document.createElement('div');
   bar.className = 'status-filter-bar';
-  const label = document.createElement('div');
+  const label = document.createElement('span');
   label.className = 'status-filter-label';
-  label.textContent = 'Filter by status';
+  label.textContent = 'Status';
   bar.appendChild(label);
   for(const st of statuses){
     const chip = document.createElement('button');
@@ -1336,7 +1346,63 @@ function placeStatusFilter(records){
     chip.addEventListener('click', () => toggleHiddenStatus(st));
     bar.appendChild(chip);
   }
-  sidebar.appendChild(bar);
+  return bar;
+}
+
+let _scrollSpyObserver = null;
+/** Horizontal scrollable chip slider; each chip scrolls to its section heading. */
+function buildCategoryChips(sections){
+  if(!sections || !sections.length) return null;
+  const slider = document.createElement('div');
+  slider.className = 'cat-chip-slider';
+  for(const s of sections){
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'cat-chip';
+    chip.dataset.headingId = s.headingId;
+    chip.textContent = s.label;
+    chip.addEventListener('click', () => {
+      const target = document.getElementById(s.headingId);
+      if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    slider.appendChild(chip);
+  }
+  return slider;
+}
+
+/** Scroll-spy: highlight the chip whose section is currently near the top. */
+function setupScrollSpy(sections, slider){
+  if(_scrollSpyObserver){ _scrollSpyObserver.disconnect(); _scrollSpyObserver = null; }
+  if(!slider) return;
+  const chipFor = (id) => slider.querySelector(`.cat-chip[data-heading-id="${id}"]`);
+  const visible = new Set();
+  const setActive = (id) => {
+    for(const c of slider.querySelectorAll('.cat-chip')) c.classList.remove('active');
+    const chip = id && chipFor(id);
+    if(chip){
+      chip.classList.add('active');
+      // Keep the chip in view by scrolling only the slider horizontally —
+      // never the page (that caused the view to jump back up).
+      const sRect = slider.getBoundingClientRect();
+      const cRect = chip.getBoundingClientRect();
+      if(cRect.left < sRect.left) slider.scrollLeft -= (sRect.left - cRect.left) + 12;
+      else if(cRect.right > sRect.right) slider.scrollLeft += (cRect.right - sRect.right) + 12;
+    }
+  };
+  _scrollSpyObserver = new IntersectionObserver((entries) => {
+    for(const e of entries){
+      if(e.isIntersecting) visible.add(e.target.id); else visible.delete(e.target.id);
+    }
+    // Pick the first section (in document order) that is currently visible.
+    const firstVisible = sections.map(s => s.headingId).find(id => visible.has(id));
+    if(firstVisible) setActive(firstVisible);
+  }, { rootMargin: '-60px 0px -70% 0px', threshold: 0 });
+  for(const s of sections){
+    const h = document.getElementById(s.headingId);
+    if(h) _scrollSpyObserver.observe(h);
+  }
+  // Default: first chip active.
+  setActive(sections[0]?.headingId);
 }
 document.addEventListener('catalog-filter-changed', () => rerenderView());
 document.addEventListener('catalog-overlay-changed', () => render());
@@ -1345,7 +1411,7 @@ function buildCardGrid(records){
   grid.className = 'cat-grid';
   let filtered = records;
   if(isOnlyWithLinks()){
-    filtered = filtered.filter(r => !!(findFieldValue(r.link, 'landingPage') || findFieldValue(r.link, 'repository')));
+    filtered = filtered.filter(r => !!(findFieldValue(r.link, 'landingPage') || findFieldValue(r.link, 'repository') || findFieldValue(r.link, 'serviceEndpoint')));
   }
   if(isHideFlagged()){
     filtered = filtered.filter(r => flagsForSubject(r.link).length === 0);
@@ -1403,8 +1469,13 @@ function buildCardGrid(records){
     }
     const landing = findFieldValue(r.link, 'landingPage');
     const repo = findFieldValue(r.link, 'repository');
+    const serviceEndpoint = findFieldValue(r.link, 'serviceEndpoint');
+    let webid = findFieldValue(r.link, 'webid');
+    if(!webid && isPersonOrOrg(r.link) && /^https?:\/\//i.test(r.link)) webid = r.link;
+    if(webid) card.appendChild(buildLinkRow(webid, 'user', hostFromUrl(webid)));
     if(landing) card.appendChild(buildLinkRow(landing, 'external-link', hostFromUrl(landing)));
     if(repo) card.appendChild(buildLinkRow(repo, 'repository', hostFromUrl(repo)));
+    if(serviceEndpoint) card.appendChild(buildLinkRow(serviceEndpoint, 'server', hostFromUrl(serviceEndpoint)));
     grid.appendChild(card);
   }
   // Defer icon upgrade so it runs after the caller has inserted the grid

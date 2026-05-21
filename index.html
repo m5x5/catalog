@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Solid Resources Catalog</title>
+  <title>Solid Catalog</title>
 <!-- auth.js MUST load before mashlib so its top-level redirect handler runs
      before mashlib's Inrupt auth init can clear our sessionStorage values. -->
 <script type="importmap">
@@ -199,24 +199,12 @@
   <meta name="thumbnail" content="https://solidproject.org/assets/img/solid-emblem.svg"> 
 </head>
 <body>
-<div class="dev-banner" role="note">
-  <div class="dev-banner-main">
-    <span>This is a development version.</span>
-    <a class="dev-banner-btn" href="https://solidproject.solidcommunity.net/catalog/" target="_blank" rel="noopener">Official catalog <i data-lucide="external-link" class="dev-banner-btn-icon"></i></a>
-  </div>
-  <button class="dev-banner-close" type="button" aria-label="Dismiss banner" onclick="dismissDevBanner()">✕</button>
-</div>
 <div id="main-content">
   <div class="nav-bar" style="display:flex;align-items:center;gap:1rem;min-height:60px;background:#2d2454;padding:0 1rem;color:#fff;">
     <a href="/" aria-label="Home" style="display:inline-flex;align-items:center;gap:0.6rem;color:#fff;text-decoration:none;">
       <img src="/assets/logo.svg" alt="" style="height:36px;display:block;">
-      <b class="sol-title" style="font-size:1.2rem;font-weight:600;color:#fff;line-height:1;margin:0;display:inline-flex;align-items:center;">Solid Resources Catalog</b>
+      <b class="sol-title" style="font-size:1.2rem;font-weight:600;color:#fff;line-height:1;margin:0;display:inline-flex;align-items:center;">Solid Catalog</b>
     </a>
-    <span style="flex:1 1 auto;"></span>
-    <div class="nav-auth"></div>
-  </div>
-
-  <div class="sub-header">
     <nav class="sol-sections" aria-label="Sections">
       <a href="/learning" data-section="learning-resources">Learning</a>
       <a href="/participation" data-section="participation-opportunities">Participation</a>
@@ -224,9 +212,41 @@
       <a href="/libraries" data-section="software-libraries">Libraries</a>
       <a href="/people" data-section="organizations-and-people">Orgs & People</a>
     </nav>
+    <span style="flex:1 1 auto;"></span>
+    <div class="nav-auth"></div>
+    <script>
+      // First-frame avatar: if a logged-in WebID + avatar were cached on a prior
+      // visit, paint the avatar immediately so it's present before modules load.
+      (function(){
+        try {
+          var wid = localStorage.getItem('catalog.cachedWebId');
+          if(!wid) return;
+          var avatar = localStorage.getItem('catalog.cachedAvatar') || '';
+          var slot = document.currentScript.previousElementSibling;
+          if(!slot || !slot.classList.contains('nav-auth')) return;
+          var initials = '?';
+          try { var u = new URL(wid); initials = (u.pathname.split('/').filter(Boolean)[0] || u.host).slice(0,2).toUpperCase(); } catch(e){}
+          slot.innerHTML =
+            '<div class="nav-account"><button class="nav-avatar" type="button" aria-label="Account menu">' +
+            (avatar ? '<img alt="" src="' + avatar.replace(/"/g,'&quot;') + '">' : '<span class="nav-avatar-initials">' + initials + '</span>') +
+            '</button></div>';
+        } catch(e){}
+      })();
+    </script>
+  </div>
+
+  <div class="dev-banner" role="note">
+    <div class="dev-banner-main">
+      <span>This is a development version.</span>
+      <a class="dev-banner-btn" href="https://solidproject.solidcommunity.net/catalog/" target="_blank" rel="noopener">Official catalog <i data-lucide="external-link" class="dev-banner-btn-icon"></i></a>
+    </div>
+    <button class="dev-banner-close" type="button" aria-label="Dismiss banner" onclick="dismissDevBanner()">✕</button>
+  </div>
+
+  <div class="sub-header">
     <sol-catalog-search class="search-input">
       <input type="text" placeholder="Search the catalog">
-      <button class="search-button" aria-label="search" title="search">⌕</button>
+      <button class="search-button" aria-label="search" title="search"><i data-lucide="search"></i></button>
     </sol-catalog-search>
     <span class="sub-header-actions">
       <solid-ui-button class="keyword-index-button" label="Keyword index" size="md"></solid-ui-button>
@@ -251,7 +271,7 @@
 </div>
 
 <div id="help" style="display:none">
-<h1 style="font-size:1.4em !important">Solid Resources Catalog</h1>
+<h1 style="font-size:1.4em !important">Solid Catalog</h1>
 
 <p>This catalog is a work in progress and not all data has been recently updated.  Please help by updataing records for yourself, your organization, and your projects.</p>
 

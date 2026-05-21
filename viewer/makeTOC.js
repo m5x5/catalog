@@ -90,20 +90,12 @@ async function skos2toc(displayElement){
       toc.appendChild(div1);
       div1.appendChild(anc);
     }
-    else {
+    else if(!section){
+      // Top-level category heading: plain, non-clickable label.
+      // On a single-section page it's just the page title, so we omit it.
       const div = document.createElement('div');
-      const anc = document.createElement('a');
-      anc.classList.add('type');
-      anc.setAttribute('href','#');
-      const subtypeUris = subtypes.map(s=>s.uri).join('|');
-      anc.setAttribute('data-subtypes', subtypeUris);
-      anc.setAttribute('data-label', label);
-      anc.textContent = label;
-      anc.addEventListener('click',(e)=>{
-        e.preventDefault();
-        if(window.showMainCategory) window.showMainCategory(label, subtypeUris.split('|'));
-      });
-      div.appendChild(anc);
+      div.classList.add('type');
+      div.textContent = label;
       toc.appendChild(div);
     }
     for(let subtype of subtypes){

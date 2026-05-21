@@ -105,13 +105,22 @@ function renderAuthUi(){
   slot.appendChild(buildAvatarMenu());
   renderIcons(slot);
   if(session && session.isActive){
+    // Cache the logged-in WebID so the next page load can paint the avatar
+    // in the first frame (see the inline injector in index.html).
+    try { localStorage.setItem('catalog.cachedWebId', session.webId || ''); } catch(e){}
+    const cachedAvatar = localStorage.getItem('catalog.cachedAvatar');
+    const img = slot.querySelector('.nav-avatar img');
+    const initials = slot.querySelector('.nav-avatar-initials');
+    if(cachedAvatar && img){ img.src = cachedAvatar; img.style.display = ''; if(initials) initials.style.display = 'none'; }
     fetchProfileImage(session.webId).then(url => {
       if(!url) return;
-      const img = slot.querySelector('.nav-avatar img');
-      const initials = slot.querySelector('.nav-avatar-initials');
+      try { localStorage.setItem('catalog.cachedAvatar', url); } catch(e){}
       if(img){ img.src = url; img.style.display = ''; }
       if(initials) initials.style.display = 'none';
     });
+  } else {
+    // Logged out: drop the cached identity so we don't flash a stale avatar.
+    try { localStorage.removeItem('catalog.cachedWebId'); localStorage.removeItem('catalog.cachedAvatar'); } catch(e){}
   }
 }
 
@@ -337,7 +346,14 @@ export async function initAuth(){
   for(const evt of ['catalog-drafts-changed','catalog-editrequests-changed','catalog-flags-changed']){
     document.addEventListener(evt, renderAuthUi);
   }
-  renderAuthUi();
+  // If we have a cached logged-in identity, the inline injector already painted
+  // the avatar. Don't render Login/Sign-Up first (it would flash); wait until
+  // the session restore resolves and render once.
+  let hadCachedSession = false;
+  try { hadCachedSession = !!localStorage.getItem('catalog.cachedWebId'); } catch(e){}
+  if(!hadCachedSession){
+    renderAuthUi();
+  }
   // Restore previous session from IndexedDB so refresh / navigation persists login.
   if(!session){
     try {

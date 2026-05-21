@@ -13,6 +13,7 @@
   --border-strong: #3a3a42;
   --link: #4ea7ff;
   --link-strong: #7cc0ff;
+  --link-visited: #c08cff;
   --accent: #2683fb;
   --accent-soft: rgba(38,131,251,0.18);
   --chip-bg: #1f1f25;
@@ -34,6 +35,7 @@
     --border-strong: #b5b8be;
     --link: #0f5ea8;
     --link-strong: #0a4988;
+    --link-visited: #7b3fb0;
     --accent: #1565d8;
     --accent-soft: rgba(21,101,216,0.12);
     --chip-bg: #eef0f4;
@@ -51,7 +53,10 @@ b { display: inline-block; margin-top: 0.5em; }
 ul { padding-left: 2em; margin: 0; }
 .pageTitle, .forms-menubar { font-size: 1.4em !important; }
 a { text-decoration: none; color: var(--link) !important; }
+a:visited { color: var(--link-visited) !important; }
 a:hover { color: var(--link-strong) !important; }
+/* Mark already-opened catalog entries as visited too. */
+.cat-card-title:visited { color: var(--link-visited) !important; }
 
 body {
   margin: 0;
@@ -74,12 +79,16 @@ solid-ui-header:not(:defined) {
 #main {
   padding: 1em;
   padding-top: 0;
-  display: grid;
-  grid-template-columns: 340px auto;
+  display: block;
+  max-width: 1000px;
+  margin: 0 auto;
 }
+/* Sidebar/TOC is replaced by the category chip slider above the cards; the
+   left column is kept in the DOM (data source) but not shown. */
+#left-column { display: none; }
 body.root-landing #main {
   grid-template-columns: auto;
-  max-width: 1080px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
@@ -93,8 +102,8 @@ body.root-landing #main {
   display: flex;
   flex-direction: column;
   gap: 0.5em;
-  background: var(--bg-elev);
-  border: none;
+  background: transparent;
+  border: 1px solid #E5E7EB;
   border-radius: 0.6em;
   padding: 1.25em;
   color: var(--text) !important;
@@ -194,20 +203,23 @@ body.root-landing #main {
 }
 .cat-heading {
   grid-column: 1 / -1;
-  margin: 0.75em 0 0 0;
-  font-size: 0.85em !important;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  margin: 1.5rem 0 0 0.8rem;
+  scroll-margin-top: 4rem;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600;
+  font-style: normal;
+  text-transform: none;
+  letter-spacing: 0;
+  line-height: 100%;
   color: var(--text-muted);
 }
-.cat-heading:first-child { margin-top: 0; }
 .cat-heading a { color: inherit !important; }
 .cat-heading a:hover { color: var(--link) !important; }
 .cat-card {
   position: relative;
-  background: var(--bg-elev);
-  border: none;
+  background: transparent;
+  border: 1px solid #E5E7EB;
   border-radius: 0.4em;
   padding: 0.7em 0.85em;
   display: flex;
@@ -239,26 +251,57 @@ body.root-landing #main {
 .card-status.status-inactive,
 .card-status.status-abandoned { background: rgba(176,68,68,0.15); color: #b04444; border-color: transparent; }
 /* keep room so the title doesn't run under the badge */
-.cat-card:has(.card-status) .cat-card-title,
-.cat-card:has(.card-status) .cat-card-head { padding-right: 5.5em; }
+.cat-card:has(.card-status) > .cat-card-title,
+.cat-card:has(.card-status) > .cat-card-head { padding-right: 5.5em; }
+
+/* Category chip slider above the cards (replaces the sidebar TOC). */
+.cat-chip-slider {
+  display: flex;
+  gap: 0.4em;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  padding: 0.6em 0;
+  margin: 0 0 0.5em;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--bg);
+}
+.cat-chip {
+  flex: 0 0 auto;
+  font-size: 0.9em !important;
+  padding: 0.4em 0.9em;
+  border-radius: 999px;
+  border: 1px solid #E5E7EB;
+  background: transparent;
+  color: var(--text) !important;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+.cat-chip:hover { background: var(--accent-soft); }
+.cat-chip.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff !important;
+  font-weight: 600;
+}
 
 .status-filter-bar {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.4em;
-  margin-top: 1.25em;
-  padding-top: 1em;
-  border-top: 1px solid var(--border);
+  margin: 0 0 1em;
 }
 .status-filter-label {
-  flex: 0 0 100%;
   font-size: 0.8em !important;
   color: var(--text-muted);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  margin-bottom: 0.2em;
+  margin-right: 0.3em;
 }
 .status-chip {
   font-size: 0.8em !important;
@@ -278,13 +321,14 @@ body.root-landing #main {
 
 .cat-card-head {
   display: flex;
-  align-items: center;
-  gap: 0.6em;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 11px;
   min-width: 0;
 }
 .cat-card-avatar {
-  width: 36px;
-  height: 36px;
+  width: 37px;
+  height: 37px;
   flex-shrink: 0;
   object-fit: contain;
   border-radius: 0.3em;
@@ -297,15 +341,27 @@ body.root-landing #main {
 }
 .cat-card-head.avatar-failed .cat-card-avatar { display: none; }
 .cat-card-title {
-  font-weight: 700;
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 500;
+  font-size: 16px !important;
+  line-height: 100%;
+  letter-spacing: 0;
   color: var(--text-strong) !important;
-  font-size: 1em !important;
 }
-.cat-card-title:hover { color: var(--link) !important; }
+.cat-card-title:hover { text-decoration: underline; }
+.cat-card-link:hover,
+.cat-card-domain:hover,
+.record-link:hover,
+.record-links a:hover,
+.record-webid a:hover { text-decoration: underline; }
 .cat-card-desc {
   margin: 0;
   color: var(--text-muted);
-  font-size: 0.9em !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 400;
+  font-size: 14px !important;
+  line-height: 150%;
+  letter-spacing: 0;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -570,7 +626,7 @@ textarea.notify-field-input { min-height: 4em; resize: vertical; }
 .draft-actions button:hover { opacity: 0.85; }
 #right-top:has(.category-highlights),
 #right-top:has(.keyword-index),
-#right-top:has(.root-landing-grid) { max-height: none; }
+#right-top:has(.root-landing-grid) { max-height: none; overflow: visible; }
 body.root-landing #right-top { max-height: none; overflow: visible; }
 
 /* Submissions view: cards on the left, sticky preview on the right. */
@@ -667,14 +723,15 @@ body.submissions-view .cat-grid { grid-template-columns: 1fr; }
   padding: 0.4em 0.75em;
   border-radius: 0.4em;
   font-size: 16px !important;
-  color: var(--text-muted) !important;
+  color: rgba(255,255,255,0.85) !important;
   text-decoration: none;
   white-space: nowrap;
 }
-.sol-sections a:hover { background: var(--accent-soft); color: var(--link-strong) !important; }
+.sol-sections a:hover { background: rgba(255,255,255,0.15); color: #fff !important; }
 .sol-sections a.active {
-  color: #fff !important;
-  background: var(--accent);
+  color: #2d2454 !important;
+  background: #fff;
+  font-weight: 600;
 }
 .sub-header img.logo {
   height: 2.5em;
@@ -685,10 +742,12 @@ body.submissions-view .cat-grid { grid-template-columns: 1fr; }
   align-items: center;
   flex: 1 1 auto;
   max-width: 48ch;
-  background: var(--bg-search);
+  height: 44px;
+  box-sizing: border-box;
+  background: #fff;
   border: 1px solid var(--border);
   border-radius: 0.4em;
-  padding: 0 0.4em;
+  padding: 0 0.6em;
   position: relative;
 }
 .search-suggest {
@@ -728,26 +787,28 @@ body.submissions-view .cat-grid { grid-template-columns: 1fr; }
   flex: 1 1 auto;
   background: transparent;
   border: none;
-  color: var(--text);
-  padding: 0.4em 0;
+  color: #161616;
+  padding: 0;
   outline: none;
   min-width: 0;
   font-size: 16px !important;
 }
 .sub-header sol-catalog-search.search-input input::placeholder {
-  color: var(--text-dim);
+  color: #6a6a6a;
 }
 .sub-header sol-catalog-search.search-input .search-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
   border: none;
-  color: var(--text-muted);
+  color: #6a6a6a !important;
   cursor: pointer;
-  padding: 0.1em 0.4em;
-  font-size: 1.6em !important;
+  padding: 0 0 0 0.4em;
   line-height: 1;
-  opacity: 0.85;
 }
-.sub-header sol-catalog-search.search-input .search-button:hover { opacity: 1; }
+.sub-header sol-catalog-search.search-input .search-button:hover { color: #161616 !important; }
+.sub-header sol-catalog-search.search-input .search-button svg { width: 18px; height: 18px; }
 .sub-header-actions {
   display: flex;
   align-items: center;
@@ -813,17 +874,74 @@ input, textarea, [contenteditable="true"] { caret-color: auto; }
 
 .edit-row {
   width: 100%;
-  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5em;
   padding: 0;
   margin: 0;
 }
-.edit-row a {
-  display: inline-block;
-  border: 1px solid var(--accent);
-  padding: 0.25em 0.5em;
-  border-radius: 0.4em;
-}
 .record-links { text-align: center; }
+.record-webid {
+  font-size: 0.85em;
+  margin: 0.25em 0 0.5em;
+  word-break: break-all;
+}
+.record-webid-label {
+  display: inline-block;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.85em;
+  color: var(--text-muted);
+  margin-right: 0.4em;
+}
+
+/* Kebab (3-dot) actions menu on the record detail */
+.record-menu { position: relative; display: inline-block; }
+.record-menu-trigger {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 0.4em;
+  color: var(--text-muted) !important;
+  cursor: pointer;
+  font-size: 1.2em !important;
+  line-height: 1;
+  padding: 0.1em 0.5em;
+}
+.record-menu-trigger:hover { background: var(--accent-soft); color: var(--text) !important; }
+.record-menu-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 50;
+  min-width: 140px;
+  background: var(--bg-modal);
+  border: 1px solid var(--border);
+  border-radius: 0.4em;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  padding: 0.25em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1em;
+  text-align: left;
+}
+.record-menu-list[hidden] { display: none; }
+.record-menu-item {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  background: transparent;
+  border: none !important;
+  border-radius: 0.3em;
+  padding: 0.5em 0.7em !important;
+  font: inherit;
+  color: var(--text) !important;
+  cursor: pointer;
+}
+.record-menu-item:hover { background: var(--accent-soft); }
+.flag-button.record-menu-item { color: #b04444 !important; margin: 0; }
 
 /* Help panel */
 #help { display: none; }
@@ -952,10 +1070,8 @@ body.showHelp #help {
 #toc .number.empty { color: var(--text-dim); opacity: 0.6; }
 #toc div.is-empty { display: none; }
 #toc.show-empty div.is-empty { display: block; opacity: 0.6; }
-#toc .toc-total {
-  margin-top: 1em;
-  color: var(--text-muted);
-}
+#toc .toc-total { display: none; }
+#toc .number { display: none; }
 #toc .toc-show-empty {
   display: inline-block;
   margin-top: 0.25em;
@@ -972,9 +1088,74 @@ body.showHelp #help {
   border-color: var(--border-strong);
 }
 
-/* Bottom-sheet (mobile only); inert on desktop. */
+/* Record detail opens in a floating sheet (right side on desktop, bottom on mobile). */
 .sheet-backdrop { display: none; }
 .sheet-close { display: none; }
+
+/* Desktop: floating side sheet from the right. */
+body.record-open .sheet-backdrop {
+  display: block;
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-bg);
+  z-index: 900;
+}
+body.record-open #right-bottom {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(460px, 92vw);
+  z-index: 901;
+  overflow: auto;
+  margin: 0;
+  background: var(--bg);
+  box-shadow: -8px 0 32px rgba(0,0,0,0.3);
+  padding: 1rem 1.25rem 1.5rem;
+  animation: sheet-in 0.2s ease;
+}
+@keyframes sheet-in {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+/* Inside the sheet the record shouldn't look like a nested card. */
+body.record-open #right-bottom .record {
+  background: transparent;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+}
+
+/* Record header: title on the left; ⋯ menu and ✕ close on the right, one row. */
+.record-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6em;
+}
+.record-header .record-name {
+  border-bottom: none;
+  margin: 0;
+}
+.record-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  flex-shrink: 0;
+}
+.record-header-actions .sheet-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+  color: var(--text) !important;
+  font-size: 1em !important;
+  cursor: pointer;
+}
 
 /* ============================================================
    Mobile / responsive
@@ -1039,33 +1220,6 @@ body.showHelp #help {
   @keyframes sheet-up {
     from { transform: translateY(100%); }
     to   { transform: translateY(0); }
-  }
-  body.record-open #right-bottom .sheet-close {
-    display: flex;
-    position: sticky;
-    top: 0;
-    margin-left: auto;
-    align-items: center;
-    justify-content: center;
-    width: 2.2em;
-    height: 2.2em;
-    border-radius: 50%;
-    border: 1px solid var(--border);
-    background: var(--bg-elev);
-    color: var(--text);
-    font-size: 1.1em !important;
-    cursor: pointer;
-    z-index: 1;
-  }
-  /* Drag-handle affordance at the top of the sheet. */
-  body.record-open #right-bottom::before {
-    content: "";
-    display: block;
-    width: 40px;
-    height: 4px;
-    border-radius: 2px;
-    background: var(--border-strong);
-    margin: 0.25rem auto 0.5rem;
   }
   /* Hide the per-section table of contents on mobile; the card grid already
      groups every subtype, so the sidebar is redundant on small screens. */

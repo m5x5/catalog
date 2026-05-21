@@ -40,12 +40,20 @@ function makeRecordHeader(subject,record){
     ? `<span class="record-flag-badge" title="${existingFlags.length} flag${existingFlags.length===1?'':'s'}">⚑ ${existingFlags.length}</span>`
     : '';
   let str = `
-      <div class="edit-row">
-        ${flagBadge}
-        <button type="button" class="flag-button" data-subject="${subject}">⚑ Flag</button>
-        <a class="edit-button" href="${subject}">edit</a>
+      <div class="record-header">
+        <b class="record-name">${record.name}</b>
+        <div class="record-header-actions">
+          ${flagBadge}
+          <div class="record-menu">
+            <button type="button" class="record-menu-trigger" aria-label="More actions" aria-haspopup="true" aria-expanded="false">⋯</button>
+            <div class="record-menu-list" hidden>
+              <a class="edit-button record-menu-item" href="${subject}">Edit</a>
+              <button type="button" class="flag-button record-menu-item" data-subject="${subject}">Flag</button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div><b class="record-name">${record.name}</b></div><div>${displayType}</div>`
+      <div class="record-type">${displayType}</div>`
   if(record.socialKeyword||record.technicalKeyword){
     str += `<div class="keywords">keywords: `;
     str += (record.socialKeyword || "") + (record.technicalKeyword ||"");
@@ -101,6 +109,23 @@ function recordDisplayFieldsToSkip(label){
     return label.match(/(name|subType|type|description|keyword|landingPage|serviceEndpoint|socialKeyword|technicalKeyword|clientid|videoCallPage|repository|logo|showcase)/i);
 }
 function addRecordListeners(display){
+  /* kebab (3-dot) menu toggle */
+  const menuTrigger = display.querySelector('.record-menu-trigger');
+  const menuList = display.querySelector('.record-menu-list');
+  if(menuTrigger && menuList){
+    menuTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = menuList.hidden;
+      menuList.hidden = !open;
+      menuTrigger.setAttribute('aria-expanded', String(open));
+    });
+    document.addEventListener('click', (e) => {
+      if(!menuList.hidden && !e.target.closest('.record-menu')){
+        menuList.hidden = true;
+        menuTrigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
   /* field link listeners  */
   let fieldAnchors = display.querySelectorAll('.field a');
   for(let fa of fieldAnchors){
