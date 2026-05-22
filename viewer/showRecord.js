@@ -3,6 +3,7 @@ import {showRecordsByKeyword} from './viewer.js';
 import {renderIcons} from './icons.js';
 import {addFlag, flagsForSubject, FLAG_REASONS, reasonLabel} from './flags.js';
 import {formDialog, toast} from './notify.js';
+import {listTestReports, addTestReport, removeTestReport, relativeTime, SOLID_SERVERS} from './testReports.js';
 
 export function showRecord(display,subject,record){
   record ||= findRecord(subject);
@@ -22,8 +23,9 @@ export function showRecord(display,subject,record){
     else str += recordDisplayMakeDiv(label,record[f]);
   }
   str += recordDisplayLinks(record);
+  str += recordDisplayTestReports(subject);
   div.innerHTML = str + dependencyStr;
-  addRecordListeners(display);
+  addRecordListeners(display, subject);
   renderIcons();
 }
 
@@ -108,7 +110,73 @@ function recordDisplayMakeDiv(label,value){
 function recordDisplayFieldsToSkip(label){
     return label.match(/(name|subType|type|description|keyword|landingPage|serviceEndpoint|socialKeyword|technicalKeyword|clientid|videoCallPage|repository|logo|showcase)/i);
 }
-function addRecordListeners(display){
+function escapeHtml(s){
+  return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+}
+function recordDisplayTestReports(subject){
+  const reports = listTestReports(subject);
+  let s = `<div class="test-reports">
+      <div class="test-reports-head">
+        <span class="test-reports-title">Tested with</span>
+        <button type="button" class="test-report-add">+ Add report</button>
+      </div>`;
+  if(!reports.length){
+    s += `<p class="test-reports-empty">No compatibility reports yet. Tested this app against a Solid server? Add one.</p>`;
+  } else {
+    s += `<ul class="test-reports-list">`;
+    for(const r of reports){
+      const server = escapeHtml(r.serverUrl && r.server === 'Other' ? r.serverUrl : r.server);
+      const version = r.version ? ` <span class="test-report-version">v${escapeHtml(r.version)}</span>` : '';
+      const who = r.webid ? ` · ${escapeHtml((()=>{try{return new URL(r.webid).host}catch{return r.webid}})())}` : '';
+      s += `<li class="test-report" data-id="${r.id}">
+          <span class="test-report-server">${server}</span>${version}
+          <span class="test-report-meta">${escapeHtml(relativeTime(r.createdAt))}${who}</span>
+          <button type="button" class="test-report-remove" data-id="${r.id}" aria-label="Remove report">✕</button>
+        </li>`;
+    }
+    s += `</ul>`;
+  }
+  s += `</div>`;
+  return s;
+}
+function addRecordListeners(display, subject){
+  /* test-report add + remove */
+  const addBtn = display.querySelector('.test-report-add');
+  if(addBtn){
+    addBtn.addEventListener('click', async () => {
+      const values = await formDialog({
+        title: 'Add compatibility report',
+        body: 'Record which Solid server you tested this app against.',
+        submitLabel: 'Add report',
+        fields: [
+          { name: 'server', label: 'Solid server', type: 'select', options: SOLID_SERVERS },
+          { name: 'serverUrl', label: 'Custom server (if “Other”)', type: 'text', placeholder: 'e.g. https://my-pod.example' },
+          { name: 'version', label: 'Version (optional)', type: 'text', placeholder: 'e.g. 7.1.3' },
+        ],
+      });
+      if(!values || !values.server) return;
+      if(values.server === 'Other' && !values.serverUrl){
+        toast('Enter a custom server URL.');
+        return;
+      }
+      addTestReport({
+        subject,
+        server: values.server,
+        serverUrl: values.serverUrl,
+        version: values.version,
+        webId: window.solidSession?.webId || '',
+      });
+      toast('Report added');
+      showRecord(display, subject);
+    });
+  }
+  for(const rm of display.querySelectorAll('.test-report-remove')){
+    rm.addEventListener('click', () => {
+      removeTestReport(rm.getAttribute('data-id'));
+      showRecord(display, subject);
+    });
+  }
+  /* kebab (3-dot) menu toggle */
   /* kebab (3-dot) menu toggle */
   const menuTrigger = display.querySelector('.record-menu-trigger');
   const menuList = display.querySelector('.record-menu-list');
