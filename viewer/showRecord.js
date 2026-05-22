@@ -5,14 +5,29 @@ import {addFlag, flagsForSubject, FLAG_REASONS, reasonLabel} from './flags.js';
 import {formDialog, toast} from './notify.js';
 import {listTestReports, addTestReport, removeTestReport, relativeTime, SOLID_SERVERS, TEST_DEPTHS, TEST_RESULTS, depthLabel, resultLabel} from './testReports.js';
 
+// Set when navigating via the in-sheet back button, so we don't push the
+// record we're leaving back onto the stack.
+let navigatingBack = false;
+
 export function showRecord(display,subject,record){
   record ||= findRecord(subject);
+  // Maintain a back-stack for navigation between records inside the sheet.
+  const isSheet = display && display.id === 'right-bottom';
+  if(isSheet){
+    if(!display._sheetStack) display._sheetStack = [];
+    const prev = display.dataset.recordSubject;
+    if(navigatingBack){
+      navigatingBack = false;
+    } else if(prev && prev !== subject){
+      display._sheetStack.push(prev);
+    }
+  }
   let div = document.createElement('div');
   div.classList.add('record');
   display.innerHTML="";
   display.appendChild(div);
   let dependencyStr = "";
-  let str = makeRecordHeader(subject,record);
+  let str = makeRecordHeader(subject,record, isSheet && display._sheetStack.length > 0);
   for(let f of Object.keys(record)){
     if( recordDisplayFieldsToSkip(f) ) continue;
     let label = f.replace(/aboutOf/,'is referenced in');
@@ -25,11 +40,12 @@ export function showRecord(display,subject,record){
   str += recordDisplayLinks(record);
   str += recordDisplayTestReports(subject);
   div.innerHTML = str + dependencyStr;
+  if(isSheet) display.dataset.recordSubject = subject;
   addRecordListeners(display, subject);
   renderIcons();
 }
 
-function makeRecordHeader(subject,record){
+function makeRecordHeader(subject,record,showBack){
   let displayType = [] ;
   let type = record.subType;
   if(!type) type = record.type;
@@ -41,8 +57,12 @@ function makeRecordHeader(subject,record){
   const flagBadge = existingFlags.length
     ? `<span class="record-flag-badge" title="${existingFlags.length} flag${existingFlags.length===1?'':'s'}">⚑ ${existingFlags.length}</span>`
     : '';
+  const backBtn = showBack
+    ? `<button type="button" class="record-back-button" aria-label="Back"><i data-lucide="arrow-left"></i></button>`
+    : '';
   let str = `
       <div class="record-header">
+        ${backBtn}
         <b class="record-name">${record.name}</b>
         <div class="record-header-actions">
           ${flagBadge}
@@ -145,6 +165,15 @@ function recordDisplayTestReports(subject){
   return s;
 }
 function addRecordListeners(display, subject){
+  /* in-sheet back button */
+  const backBtn = display.querySelector('.record-back-button');
+  if(backBtn){
+    backBtn.addEventListener('click', () => {
+      const stack = display._sheetStack || [];
+      const prev = stack.pop();
+      if(prev){ navigatingBack = true; showRecord(display, prev); }
+    });
+  }
   /* test-report add + remove */
   const addBtn = display.querySelector('.test-report-add');
   if(addBtn){

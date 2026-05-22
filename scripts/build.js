@@ -59,6 +59,8 @@ async function main(){
     'catalog-shacl.ttl',
     'catalog-skos.ttl',
     'catalog-about.html',
+    'manifest.webmanifest',
+    'sw.js',
   ]){
     await copyOptional(f);
   }

@@ -803,6 +803,26 @@ body.submissions-view .cat-grid { grid-template-columns: 1fr; }
   background: #fff;
   font-weight: 600;
 }
+/* Extra menu entries (e.g. Keyword index) only appear in the mobile dropdown. */
+.nav-extra { display: none; }
+/* Hamburger toggle: desktop hides it (sections shown inline). */
+.nav-hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 0.4em;
+}
+.nav-hamburger:hover { background: rgba(255,255,255,0.15); }
+.nav-hamburger i, .nav-hamburger svg { width: 24px; height: 24px; }
+.nav-hamburger svg { stroke: #fff !important; color: #fff; }
+
 .sub-header img.logo {
   height: 2.5em;
   display: block;
@@ -1291,7 +1311,23 @@ body.record-open #right-bottom .record {
 .record-header .record-name {
   border-bottom: none;
   margin: 0;
+  flex: 1 1 auto;
 }
+.record-back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2em;
+  height: 2em;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+  color: var(--text) !important;
+  cursor: pointer;
+}
+.record-back-button:hover { background: var(--border); }
+.record-back-button i, .record-back-button svg { width: 18px; height: 18px; }
 .record-header-actions {
   display: flex;
   align-items: center;
@@ -1322,15 +1358,37 @@ body.record-open #right-bottom .record {
     gap: 0.5rem;
     padding: 0.6rem 0.75rem;
   }
+  /* Sections collapse behind the hamburger on mobile. */
+  .nav-hamburger { display: inline-flex; }
   .sol-sections {
-    order: 3;
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    flex-wrap: nowrap;
-    padding-bottom: 0.15rem;
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: #2d2454;
+    padding: 0.4rem 0.5rem 0.6rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    z-index: 950;
   }
-  .sol-sections a { flex: 0 0 auto; }
+  .nav-bar { position: relative; }
+  .nav-bar.sections-open .sol-sections { display: flex; }
+  .sol-sections a {
+    flex: 0 0 auto;
+    padding: 0.7em 0.85em;
+    border-radius: 0.4em;
+  }
+  .sol-sections .nav-extra {
+    display: block;
+    margin-top: 0.3rem;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 0.8em;
+  }
+  /* Keyword index lives in the burger menu on mobile. */
+  .sub-header .keyword-index-button { display: none; }
   .sub-header sol-catalog-search.search-input {
     order: 1;
     flex: 1 1 100%;
@@ -1358,9 +1416,11 @@ body.record-open #right-bottom .record {
   }
   body.record-open #right-bottom {
     position: fixed;
+    top: auto;
     left: 0;
     right: 0;
     bottom: 0;
+    width: auto;
     z-index: 901;
     max-height: 85vh;
     overflow: auto;

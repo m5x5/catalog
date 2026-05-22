@@ -195,8 +195,20 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap">
   <link rel="stylesheet" type="text/css" href="/viewer/viewer.css">
   <link rel="stylesheet" type="text/css" href="/viewer/forms.css">
-  <link rel="icon" href="https://solidproject.org/assets/img/solid-emblem.svg" type="image/svg+xml"> 
-  <meta name="thumbnail" content="https://solidproject.org/assets/img/solid-emblem.svg"> 
+  <link rel="icon" href="https://solidproject.org/assets/img/solid-emblem.svg" type="image/svg+xml">
+  <meta name="thumbnail" content="https://solidproject.org/assets/img/solid-emblem.svg">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#2d2454">
+  <link rel="apple-touch-icon" href="/assets/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Solid Catalog">
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function(){
+        navigator.serviceWorker.register('/sw.js').catch(function(){});
+      });
+    }
+  </script>
 </head>
 <body>
 <div id="main-content">
@@ -205,15 +217,47 @@
       <img src="/assets/logo.svg" alt="" style="height:36px;display:block;">
       <b class="sol-title" style="font-size:1.2rem;font-weight:600;color:#fff;line-height:1;margin:0;display:inline-flex;align-items:center;">Solid Catalog</b>
     </a>
-    <nav class="sol-sections" aria-label="Sections">
+    <nav id="sol-sections-nav" class="sol-sections" aria-label="Sections">
       <a href="/learning" data-section="learning-resources">Learning</a>
       <a href="/participation" data-section="participation-opportunities">Participation</a>
       <a href="/apps" data-section="apps-and-services">Apps & Services</a>
       <a href="/libraries" data-section="software-libraries">Libraries</a>
       <a href="/people" data-section="organizations-and-people">Orgs & People</a>
+      <a href="#" class="nav-extra nav-keyword-index">Keyword index</a>
     </nav>
     <span style="flex:1 1 auto;"></span>
     <div class="nav-auth"></div>
+    <button class="nav-hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sol-sections-nav" onclick="toggleNavSections()">
+      <i data-lucide="menu"></i>
+    </button>
+    <script>
+      // Mobile hamburger: toggles the sections nav as a dropdown panel.
+      function toggleNavSections(){
+        var bar = document.querySelector('.nav-bar');
+        var btn = document.querySelector('.nav-hamburger');
+        if(!bar) return;
+        var open = bar.classList.toggle('sections-open');
+        if(btn){ btn.setAttribute('aria-expanded', open ? 'true' : 'false'); btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); }
+      }
+      // Close the menu after navigating to a section.
+      document.querySelectorAll('#sol-sections-nav a').forEach(function(a){
+        a.addEventListener('click', function(){
+          var bar = document.querySelector('.nav-bar');
+          var btn = document.querySelector('.nav-hamburger');
+          if(bar){ bar.classList.remove('sections-open'); }
+          if(btn){ btn.setAttribute('aria-expanded','false'); btn.setAttribute('aria-label','Open menu'); }
+        });
+      });
+      // Keyword index entry in the mobile menu mirrors the sub-header button.
+      var kwLink = document.querySelector('.nav-keyword-index');
+      if(kwLink){
+        kwLink.addEventListener('click', function(e){
+          e.preventDefault();
+          var b = document.querySelector('.keyword-index-button');
+          if(b) b.click();
+        });
+      }
+    </script>
     <script>
       // First-frame avatar: if a logged-in WebID + avatar were cached on a prior
       // visit, paint the avatar immediately so it's present before modules load.

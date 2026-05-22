@@ -139,7 +139,11 @@ function setupRecordSheet(){
 
 function closeRecordSheet(){
   const bottom = document.getElementById('right-bottom');
-  if(bottom) bottom.innerHTML = '';
+  if(bottom){
+    bottom.innerHTML = '';
+    bottom._sheetStack = [];
+    delete bottom.dataset.recordSubject;
+  }
   document.body.classList.remove('record-open');
 }
 window.closeRecordSheet = closeRecordSheet;
