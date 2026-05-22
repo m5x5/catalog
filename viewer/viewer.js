@@ -160,26 +160,25 @@ async function render(){
   updateDraftBadge();
   updateEditBadge();
   updateFlagBadge();
-  if(path === '/drafts'){
-    showDrafts();
-    return;
-  }
-  if(path === '/edits'){
-    showEditRequests();
-    return;
-  }
-  if(path === '/submissions'){
-    showSubmissions();
-    return;
-  }
-  if(path === '/flags'){
-    showFlags();
-    return;
-  }
-  if(currentSectionSlug()){
-    showCategoryHighlights();
+  if(path === '/drafts') showDrafts();
+  else if(path === '/edits') showEditRequests();
+  else if(path === '/submissions') showSubmissions();
+  else if(path === '/flags') showFlags();
+  else if(currentSectionSlug()) showCategoryHighlights();
+  else showRootLanding();
+  updateBreadcrumb();
+}
+
+// Mobile breadcrumb above the search: "Home / <current page>". Derives the
+// page label from document.title, which every view sets.
+function updateBreadcrumb(){
+  const el = document.querySelector('.breadcrumb');
+  if(!el) return;
+  const label = (document.title || '').replace(/\s*—\s*Solid Catalog$/, '').trim();
+  if(!label || label === 'Solid Catalog'){
+    el.innerHTML = `<span class="breadcrumb-current">Home</span>`;
   } else {
-    showRootLanding();
+    el.innerHTML = `<a href="/" class="breadcrumb-link">Home</a><span class="breadcrumb-sep">/</span><span class="breadcrumb-current">${label}</span>`;
   }
 }
 

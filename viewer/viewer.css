@@ -219,7 +219,7 @@ body.root-landing #main {
 .cat-card {
   position: relative;
   background: transparent;
-  border: 1px solid #E5E7EB;
+  border: 1px solid var(--border);
   border-radius: 0.4em;
   padding: 0.7em 0.85em;
   display: flex;
@@ -273,7 +273,7 @@ body.root-landing #main {
   font-size: 0.9em !important;
   padding: 0.4em 0.9em;
   border-radius: 999px;
-  border: 1px solid #E5E7EB;
+  border: 1px solid var(--border);
   background: transparent;
   color: var(--text) !important;
   cursor: pointer;
@@ -316,7 +316,6 @@ body.root-landing #main {
   background: transparent;
   color: var(--text-dim);
   border-color: var(--border);
-  text-decoration: line-through;
 }
 
 .cat-card-head {
@@ -759,7 +758,7 @@ body.submissions-view .cat-grid { grid-template-columns: 1fr; }
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  background: var(--bg-header);
+  background: var(--bg);
   border-bottom: 1px solid var(--border);
   line-height: 1;
 }
@@ -805,6 +804,20 @@ body.submissions-view .cat-grid { grid-template-columns: 1fr; }
 }
 /* Extra menu entries (e.g. Keyword index) only appear in the mobile dropdown. */
 .nav-extra { display: none; }
+
+/* Breadcrumb above the search — mobile only. */
+.breadcrumb { display: none; }
+.breadcrumb {
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.6rem 0.9rem 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.breadcrumb-link { color: var(--link) !important; text-decoration: none; }
+.breadcrumb-link:hover { text-decoration: underline; }
+.breadcrumb-sep { color: var(--text-dim); }
+.breadcrumb-current { color: var(--text); font-weight: 600; }
 /* Hamburger toggle: desktop hides it (sections shown inline). */
 .nav-hamburger {
   display: none;
@@ -1389,6 +1402,9 @@ body.record-open #right-bottom .record {
   }
   /* Keyword index lives in the burger menu on mobile. */
   .sub-header .keyword-index-button { display: none; }
+
+  /* Breadcrumb visible on mobile. */
+  .breadcrumb { display: flex; }
   .sub-header sol-catalog-search.search-input {
     order: 1;
     flex: 1 1 100%;
