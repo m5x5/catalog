@@ -150,7 +150,7 @@ function addRecordListeners(display, subject){
         submitLabel: 'Add report',
         fields: [
           { name: 'server', label: 'Solid server', type: 'select', options: SOLID_SERVERS },
-          { name: 'serverUrl', label: 'Custom server (if “Other”)', type: 'text', placeholder: 'e.g. https://my-pod.example' },
+          { name: 'serverUrl', label: 'Custom server', type: 'text', placeholder: 'e.g. https://my-pod.example', showWhen: { field: 'server', value: 'Other' } },
           { name: 'version', label: 'Version (optional)', type: 'text', placeholder: 'e.g. 7.1.3' },
         ],
       });

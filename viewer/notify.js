@@ -184,8 +184,28 @@ export function formDialog({ title, body, fields = [], submitLabel = 'OK', cance
       wrap.appendChild(input);
       form.appendChild(wrap);
       inputs[f.name] = input;
+      if(f.showWhen) wrap.dataset.showWhen = JSON.stringify(f.showWhen);
     }
     panel.appendChild(form);
+
+    // Conditional visibility: fields with showWhen only appear when another
+    // field has the specified value.
+    const applyConditionalFields = () => {
+      for(const f of fields){
+        if(!f.showWhen) continue;
+        const controller = inputs[f.showWhen.field];
+        const wrapEl = inputs[f.name].closest('.notify-field');
+        if(!controller || !wrapEl) continue;
+        wrapEl.hidden = controller.value !== f.showWhen.value;
+      }
+    };
+    for(const f of fields){
+      if(f.showWhen && inputs[f.showWhen.field]){
+        inputs[f.showWhen.field].addEventListener('change', applyConditionalFields);
+        inputs[f.showWhen.field].addEventListener('input', applyConditionalFields);
+      }
+    }
+    applyConditionalFields();
 
     const actions = document.createElement('div');
     actions.className = 'notify-actions';
