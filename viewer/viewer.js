@@ -1028,13 +1028,24 @@ function showCategoryHighlights(){
     const catHeading = document.createElement('h3');
     catHeading.className = 'cat-heading';
     catHeading.id = s.headingId;
-    catHeading.textContent = s.label;
+    const text = document.createElement('span');
+    text.className = 'cat-heading-text';
+    text.textContent = s.label;
+    const add = document.createElement('button');
+    add.type = 'button';
+    add.className = 'add-chip';
+    add.setAttribute('aria-label', `Add to ${s.label}`);
+    add.innerHTML = `<i data-lucide="plus"></i><span>Add</span>`;
+    add.addEventListener('click', () => showPage('type-chooser'));
+    catHeading.appendChild(text);
+    catHeading.appendChild(add);
     grid.appendChild(catHeading);
     const subGrid = buildCardGrid(s.records);
     for(const card of [...subGrid.children]){ grid.appendChild(card); }
   }
   right.appendChild(wrap);
   if(chips) setupScrollSpy(sections, chips);
+  renderIcons();
 }
 function addListeners(){
     document.addEventListener('keydown',(e)=>{
@@ -1084,10 +1095,12 @@ function addListeners(){
       e.preventDefault();
       showKeywordIndex();
     });
-    newButton.addEventListener('click',(e)=>{
-      e.preventDefault();
-      showPage('type-chooser');
-    });
+    if(newButton){
+      newButton.addEventListener('click',(e)=>{
+        e.preventDefault();
+        showPage('type-chooser');
+      });
+    }
     if(aboutButton){
       aboutButton.addEventListener('click',(e)=>{
         e.preventDefault();

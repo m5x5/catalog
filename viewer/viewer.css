@@ -205,6 +205,9 @@ body.root-landing #main {
   grid-column: 1 / -1;
   margin: 1.5rem 0 0 0.8rem;
   scroll-margin-top: 4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
   font-family: 'DM Sans', sans-serif !important;
   font-size: 14px !important;
   font-weight: 600;
@@ -281,6 +284,26 @@ body.root-landing #main {
   transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
 }
 .cat-chip:hover { background: var(--accent-soft); }
+
+/* Small tag-styled "Add" button: looks like a chip but a touch smaller. */
+.add-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  flex: 0 0 auto;
+  font-size: 0.5em !important;
+  padding: 0.4em 0.8em;
+  border-radius: 999px;
+  border: 1px solid var(--border) !important;
+  background: transparent;
+  color: var(--text) !important;
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 1;
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+.add-chip:hover { background: var(--accent-soft); border-color: var(--accent) !important; }
+.add-chip i, .add-chip svg { width: 14px; height: 14px; }
 .cat-chip.active {
   background: var(--accent);
   border-color: var(--accent);
