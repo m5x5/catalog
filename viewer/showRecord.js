@@ -3,7 +3,7 @@ import {showRecordsByKeyword} from './viewer.js';
 import {renderIcons} from './icons.js';
 import {addFlag, flagsForSubject, FLAG_REASONS, reasonLabel} from './flags.js';
 import {formDialog, toast} from './notify.js';
-import {listTestReports, addTestReport, removeTestReport, relativeTime, SOLID_SERVERS} from './testReports.js';
+import {listTestReports, addTestReport, removeTestReport, relativeTime, SOLID_SERVERS, TEST_DEPTHS, TEST_RESULTS, depthLabel, resultLabel} from './testReports.js';
 
 export function showRecord(display,subject,record){
   record ||= findRecord(subject);
@@ -128,10 +128,15 @@ function recordDisplayTestReports(subject){
       const server = escapeHtml(r.serverUrl && r.server === 'Other' ? r.serverUrl : r.server);
       const version = r.version ? ` <span class="test-report-version">v${escapeHtml(r.version)}</span>` : '';
       const who = r.webid ? ` · ${escapeHtml((()=>{try{return new URL(r.webid).host}catch{return r.webid}})())}` : '';
+      const result = r.result ? `<span class="test-report-result result-${escapeHtml(r.result)}">${escapeHtml(resultLabel(r.result))}</span>` : '';
+      const depth = r.testType ? `<span class="test-report-depth">${escapeHtml(depthLabel(r.testType))}</span>` : '';
       s += `<li class="test-report" data-id="${r.id}">
-          <span class="test-report-server">${server}</span>${version}
+          <div class="test-report-row">
+            <span class="test-report-server">${server}</span>${version}
+            <button type="button" class="test-report-remove" data-id="${r.id}" aria-label="Remove report">✕</button>
+          </div>
+          <div class="test-report-tags">${result}${depth}</div>
           <span class="test-report-meta">${escapeHtml(relativeTime(r.createdAt))}${who}</span>
-          <button type="button" class="test-report-remove" data-id="${r.id}" aria-label="Remove report">✕</button>
         </li>`;
     }
     s += `</ul>`;
@@ -152,6 +157,8 @@ function addRecordListeners(display, subject){
           { name: 'server', label: 'Solid server', type: 'select', options: SOLID_SERVERS },
           { name: 'serverUrl', label: 'Custom server', type: 'text', placeholder: 'e.g. https://my-pod.example', showWhen: { field: 'server', value: 'Other' } },
           { name: 'version', label: 'Version (optional)', type: 'text', placeholder: 'e.g. 7.1.3' },
+          { name: 'testType', label: 'Type of test', type: 'select', options: TEST_DEPTHS },
+          { name: 'result', label: 'Result', type: 'select', options: TEST_RESULTS },
         ],
       });
       if(!values || !values.server) return;
@@ -164,6 +171,8 @@ function addRecordListeners(display, subject){
         server: values.server,
         serverUrl: values.serverUrl,
         version: values.version,
+        testType: values.testType,
+        result: values.result,
         webId: window.solidSession?.webId || '',
       });
       toast('Report added');
