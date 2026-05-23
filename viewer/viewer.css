@@ -1423,6 +1423,12 @@ body.record-open #right-bottom .record {
     border-top: 1px solid rgba(255,255,255,0.15);
     padding-top: 0.8em;
   }
+  /* Auth-state-aware menu entries: login/signup only when logged out. */
+  body:not(.logged-out) .sol-sections .nav-login,
+  body:not(.logged-out) .sol-sections .nav-signup { display: none; }
+  /* Hide the inline Log In / Sign Up buttons on mobile; the menu entries
+     replace them to save space in the nav bar. */
+  .nav-auth solid-ui-button { display: none; }
   /* Keyword index lives in the burger menu on mobile. */
   .sub-header .keyword-index-button { display: none; }
 

@@ -88,6 +88,7 @@ function onSessionStateChange(){
 function renderAuthUi(){
   const slot = document.querySelector('.nav-auth');
   if(!slot) return;
+  document.body.classList.toggle('logged-out', !(session && session.isActive));
   slot.innerHTML = '';
   if(!session || !session.isActive){
     const loginBtn = document.createElement('solid-ui-button');

@@ -224,6 +224,8 @@
       <a href="/libraries" data-section="software-libraries">Libraries</a>
       <a href="/people" data-section="organizations-and-people">Orgs & People</a>
       <a href="#" class="nav-extra nav-keyword-index">Keyword index</a>
+      <a href="#" class="nav-extra nav-login">Log in</a>
+      <a href="#" class="nav-extra nav-signup">Sign up</a>
     </nav>
     <span style="flex:1 1 auto;"></span>
     <div class="nav-auth"></div>
@@ -257,6 +259,15 @@
           if(b) b.click();
         });
       }
+      // Log in / Sign up mobile-menu entries proxy the auth buttons in .nav-auth.
+      function clickAuthBtn(idx){
+        var btns = document.querySelectorAll('.nav-auth solid-ui-button');
+        if(btns[idx]) btns[idx].click();
+      }
+      var li = document.querySelector('.nav-login');
+      if(li) li.addEventListener('click', function(e){ e.preventDefault(); clickAuthBtn(0); });
+      var si = document.querySelector('.nav-signup');
+      if(si) si.addEventListener('click', function(e){ e.preventDefault(); clickAuthBtn(1); });
     </script>
     <script>
       // First-frame avatar: if a logged-in WebID + avatar were cached on a prior
